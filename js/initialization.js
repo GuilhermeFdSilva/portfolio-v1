@@ -2,6 +2,7 @@ const bootDisplay = document.getElementById("boot");
 const terminal = document.getElementById("terminal");
 const skip = document.getElementById("skip");
 
+// Texts for the boot
 const bootLines = [
 "GX BIOS v1.3",
 "System Vendor: Guigrid Systems",
@@ -25,9 +26,10 @@ const bootLines = [
 "GX Desktop Ready.",
 "",
 "",
-{ type: "end" }
+{ type: "end" } // Sentinel for the last line
 ];
 
+// Function to close the system boot
 function startSystem () {
     terminal.classList.add("exit");
 
@@ -39,10 +41,12 @@ function startSystem () {
     document.removeEventListener("click", startSystem);
 }
 
+// This function generates a promise to wait for the next line or letter. It receives the waiting time
 function delay(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// Generates a random number for the line delay
 function lineRandomDelay() {
     const min = 50;
     const max = 150;
@@ -50,11 +54,13 @@ function lineRandomDelay() {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+// Add the listeners to finalize the boot
 function addExitListeners() {
     document.addEventListener("keydown", startSystem);
     document.addEventListener("touchend", startSystem);
 }
 
+// Changes the visibility of the skip and cursor
 function changeVisibility() {
     skip.style.display = "none";
 
@@ -62,6 +68,7 @@ function changeVisibility() {
     bootDisplay.classList.add("loading-complete");
 }
 
+// Iteration to generate the typing effect in the terminal
 async function typeBoot(){
     for (const text of bootLines){
         const line = document.createElement("p");
@@ -92,16 +99,19 @@ async function typeBoot(){
     }
 }
 
+// Skip listener on ESC
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
         startSystem();
     }
 });
 
+// Skip listener on click or touch
 document.addEventListener("click", (e) => {
     if (e.target === skip) {
         startSystem();
     }
 });
 
+// Initialize the Iteration
 typeBoot();
