@@ -47,10 +47,18 @@
     content: none;
 }
 
+#skip {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    animation: blink 1s steps(1) infinite;
+    cursor: pointer;
+}
+
 @keyframes blink {
-  50% {
-    opacity: 0;
-  }
+    50% {
+        opacity: 0.5;
+    }
 }
 
 .blink {

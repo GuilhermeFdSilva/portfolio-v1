@@ -1,4 +1,6 @@
 const bootDisplay = document.getElementById("boot");
+const skip = document.getElementById("skip");
+
 const bootLines = [
 "GX BIOS v1.3",
 "System Vendor: Guigrid Systems",
@@ -44,6 +46,7 @@ function delay(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// 
 async function typeBoot(){
 
     for (const text of bootLines){
@@ -58,6 +61,8 @@ async function typeBoot(){
         }
 
         if (text === -1) {
+            skip.style.display = "none";
+
             line.classList.add("blink");
             line.innerHTML = "< PRESS ANY KEY TO START >";
             
@@ -80,5 +85,17 @@ async function typeBoot(){
         await delay(Math.floor(Math.random() * (max - min + 1)) + min);
     }
 }
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        startSystem();
+    }
+});
+
+document.addEventListener("click", (e) => {
+    if (e.target === skip) {
+        startSystem();
+    }
+});
 
 typeBoot();
