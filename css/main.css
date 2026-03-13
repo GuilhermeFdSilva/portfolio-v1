@@ -3,3 +3,8 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+::selection {
+  background-color: var(--muted);
+  color: var(--bg-black);
+}

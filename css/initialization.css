@@ -1,10 +1,5 @@
 @import "./root.css";
 
-::selection {
-  background-color: var(--muted);
-  color: var(--bg-black);
-}
-
 #terminal {
     background-color: var(--bg-black);
     font-family: var(--font-family);
