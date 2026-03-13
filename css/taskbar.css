@@ -1,0 +1,24 @@
+@import "root.css";
+
+#taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 50px;
+    background-color: var(--bg-black);
+    display: flex;   
+}
+
+#start-button {
+    width: 50px;
+}
+
+#taskbar-apps {
+    flex-grow: 1;
+    background-color: red;
+}
+
+#taskbar-system {
+    width: 70px;
+}
