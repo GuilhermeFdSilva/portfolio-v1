@@ -47,9 +47,10 @@ function delay(ms){
 }
 
 // Generates a random number for the line delay
-function lineRandomDelay() {
-    const min = 50;
-    const max = 150;
+function lineRandomDelay(textLength) {
+    console.log(textLength)
+    const min = textLength * 5;
+    const max = textLength * 8;
 
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
@@ -95,7 +96,7 @@ async function typeBoot(){
 
         bootDisplay.scrollTop = bootDisplay.scrollHeight;
 
-        await delay(lineRandomDelay());
+        await delay(lineRandomDelay(text.length));
     }
 }
 
