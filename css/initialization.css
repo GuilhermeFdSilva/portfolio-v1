@@ -6,11 +6,9 @@
     color: var(--muted);
     line-height: 1.6rem;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    padding: 15vh 20vw;
+    inset: 0;
+    z-index: 9000;
+    padding: 15vh 15vw;
     transition: all ease-out 0.5s;
 }
 
@@ -63,11 +61,5 @@
 @media (max-width: 720px) {
     #terminal {
         padding: 20px;
-    }
-}
-
-@media (max-width: 510px) {
-    #terminal {
-        font-size: xx-small;
     }
 }
