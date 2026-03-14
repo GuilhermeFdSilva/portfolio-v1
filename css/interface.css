@@ -1,0 +1,49 @@
+@import "root.css";
+
+.interface-window {
+    background-color: var(--bg-gray);
+    border-left: var(--interface-window-shadow) solid var(--off-gray);
+    border-right: var(--interface-window-shadow) solid var(--bleck);
+    border-top: var(--interface-window-shadow) solid var(--off-gray);
+    border-bottom: var(--interface-window-shadow) solid var(--black);
+}
+
+.interface-button {
+    background-color: var(--bg-gray);
+    border-left: var(--interface-button-shadow) solid var(--off-gray);
+    border-right: var(--interface-button-shadow) solid var(--dark-gray);
+    border-top: var(--interface-button-shadow) solid var(--off-gray);
+    border-bottom: var(--interface-button-shadow) solid var(--dark-gray);
+    cursor: pointer;
+}
+
+.interface-button:active {
+    background-color: var(--bg-gray);
+    border-left: var(--interface-button-focus-shadow) solid var(--dark-gray);
+    border-right: var(--interface-button-focus-shadow) solid var(--off-gray);
+    border-top: var(--interface-button-focus-shadow) solid var(--dark-gray);
+    border-bottom: var(--interface-button-focus-shadow) solid var(--off-gray);
+}
+
+.interface-button:focus {
+    background-color: var(--bg-gray);
+    border-left: var(--interface-button-focus-shadow) solid var(--dark-gray);
+    border-right: var(--interface-button-focus-shadow) solid var(--off-gray);
+    border-top: var(--interface-button-focus-shadow) solid var(--dark-gray);
+    border-bottom: var(--interface-button-focus-shadow) solid var(--off-gray);
+}
+
+.interface-divider {
+    width: 0;
+    border-left: var(--interface-divider-shadow) solid var(--dark-gray);
+    border-right: var(--interface-divider-shadow) solid var(--off-gray);
+    border-top: var(--interface-divider-shadow) solid var(--dark-gray);
+    border-bottom: var(--interface-divider-shadow) solid var(--off-gray);
+}
+
+.interface-field {
+    border-left: var(--interface-divider-shadow) solid var(--dark-gray);
+    border-right: var(--interface-divider-shadow) solid var(--off-gray);
+    border-top: var(--interface-divider-shadow) solid var(--dark-gray);
+    border-bottom: var(--interface-divider-shadow) solid var(--off-gray);
+}

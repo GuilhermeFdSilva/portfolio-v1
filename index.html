@@ -6,6 +6,7 @@
     <title> portfolio-v1 </title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/crt_filter.css">
+    <link rel="stylesheet" href="css/interface.css">
     <link rel="stylesheet" href="css/initialization.css">
     <link rel="stylesheet" href="css/taskbar.css">
 </head>
@@ -20,21 +21,29 @@
     </section>
 
     <!-- Taskbar - This section is for navigation and to contain the items accessed by the user. -->
-    <nav id="taskbar">
-        <button id="start-button">
-            <img src="" alt="">
+    <nav id="taskbar" class="interface-window">
+        <button id="taskbaer-start-button" class="interface-button">
+            <img src="assets/aurora.png" alt="Aurora">
+            <span>INICIAR</span>
         </button>
+
+        <div class="interface-divider"></div>
 
         <section id="taskbar-apps">
 
         </section>
 
-        <div id="taskbar-system">
-            <p id="clock">  </p>
-            <p id="calendar">  </p>
+        <div class="interface-divider"></div>
+
+        <div id="taskbar-system" class="interface-field">
+            <button id="taskbar-calendar" class="interface-button">
+                <img src="assets/calendar.png" alt="calendar">
+            </button>
+            <p id="taskbar-clock">  </p>
         </div>
     </nav>
 
     <script src="js/initialization.js" defer></script>
+    <script src="js/taskbar.js" defer></script>
 </body>
 </html>
