@@ -21,9 +21,9 @@
     </section>
 
     <!-- Taskbar - This section is for navigation and to contain the items accessed by the user. -->
-    <nav id="taskbar">
-        <button id="start-button" class="interface-button">
-            <img src="" alt="">
+    <nav id="taskbar" class="interface-window">
+        <button id="taskbaer-start-button" class="interface-button">
+            <img src="assets/aurora.png" alt="Aurora">
             <span>INICIAR</span>
         </button>
 
@@ -35,12 +35,15 @@
 
         <div class="interface-divider"></div>
 
-        <div id="taskbar-system">
-            <img src="" alt="calendar">
-            <p id="clock"> 12:99 </p>
+        <div id="taskbar-system" class="interface-field">
+            <button id="taskbar-calendar" class="interface-button">
+                <img src="assets/calendar.png" alt="calendar">
+            </button>
+            <p id="taskbar-clock">  </p>
         </div>
     </nav>
 
     <script src="js/initialization.js" defer></script>
+    <script src="js/taskbar.js" defer></script>
 </body>
 </html>
