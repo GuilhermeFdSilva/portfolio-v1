@@ -48,7 +48,6 @@ function delay(ms){
 
 // Generates a random number for the line delay
 function lineRandomDelay(textLength) {
-    console.log(textLength)
     const min = textLength * 5;
     const max = textLength * 8;
 
