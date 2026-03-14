@@ -2,6 +2,7 @@
 
 :root {
     --font-family: "Pixelify Sans", sans-serif;
+    --font-color: #222222;
 
     --font-size: 20px;
 
@@ -13,4 +14,20 @@
     --off-gray: #ECECEC;
 
     --terminal: #00e500;
+
+    --interface-window-shadow: 4px;
+    --interface-button-shadow: 3px;
+    --interface-button-focus-shadow: 4px;
+    --interface-divider-shadow: 2px;
+
+    --taskbar-button-height: 50px;
+    --taskbar-button-padding: 8px;
+    --taskbar-content-gap: 5px;
+    --taskbar-content-padding: 5px;
+    --taskbar-calendar-button: 30px;
+    --taskbar-height: calc(
+                        var(--taskbar-button-height) +
+                        var(--taskbar-content-padding) * 2 +
+                        var(--interface-window-shadow) * 2
+                    );
 }
