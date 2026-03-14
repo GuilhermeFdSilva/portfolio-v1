@@ -3,7 +3,7 @@
 #terminal {
     background-color: var(--bg-black);
     font-family: var(--font-family);
-    color: var(--muted);
+    color: var(--terminal);
     line-height: 1.6rem;
     position: fixed;
     inset: 0;

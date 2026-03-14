@@ -5,11 +5,12 @@
 
     --font-size: 20px;
 
-    --bg-black: #0c0c0c;
+    --bg-black: #151515;
+    --black: #313131;
 
     --dark-gray: #767676;
     --bg-gray: #c6c6c6;
     --off-gray: #ECECEC;
 
-    --muted: #ffffffcc;
+    --terminal: #00e500;
 }
