@@ -1,0 +1,15 @@
+.interface-button {
+    background-color: var(--bg-gray);
+    border-left: 3px solid var(--off-gray);
+    border-right: 3px solid var(--dark-gray);
+    border-top: 3px solid var(--off-gray);
+    border-bottom: 3px solid var(--dark-gray);
+}
+
+.interface-divider {
+    width: 0;
+    border-left: 2px solid var(--dark-gray);
+    border-right: 2px solid var(--off-gray);
+    border-top: 2px solid var(--dark-gray);
+    border-bottom: 2px solid var(--off-gray);
+}
