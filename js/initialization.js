@@ -9,22 +9,22 @@ const bootLines = [
 "",
 "Performing system diagnostics...",
 "",
-"CPU ........................................ Virtual Core OK",
-"Memory .............................. 8192MB OK",
-"Display ................................ Web Renderer Ready",
+"CPU ................. Virtual Core OK",
+"Memory .............. 8192MB OK",
+"Display ............. Web Renderer Ready",
 "",
 "Detecting hardware devices...",
-"Keyboard .......................... Connected",
-"Pointer Device ............... Connected",
-"Storage ............................ Virtual Disk Mounted",
+"Keyboard ............ Connected",
+"Pointer Device ...... Connected",
+"Storage ............. Virtual Disk Mounted",
 "",
 "Loading AuroraOS kernel...",
 "Initializing core services...",
 "",
-"system.core ................. loaded",
-"ui.manager ..................... loaded",
-"window.service ............ loaded",
-"network.interface ..f. loaded",
+"system.core ......... loaded",
+"ui.manager .......... loaded",
+"window.service ...... loaded",
+"network.interface ... loaded",
 "",
 "Starting Aurora Desktop Environment...",
 "",
@@ -33,6 +33,8 @@ const bootLines = [
 "AuroraOS is starting...",
 "",
 "AuroraOS Ready.",
+"",
+"",
 { type: "end" } // Sentinel for the last line
 ];
 
@@ -55,8 +57,8 @@ function delay(ms){
 
 // Generates a random number for the line delay
 function lineRandomDelay(textLength) {
-    const min = textLength * 5;
-    const max = textLength * 8;
+    const min = textLength * 4;
+    const max = textLength * 6;
 
     return Math.floor(Math.random() * (max - min + 1)) + min
 }

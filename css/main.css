@@ -6,6 +6,13 @@
   font-size:  var(--font-size);
 }
 
+
+@media (max-width: 510px) {
+    * {
+      font-size: var(--font-size-small);
+    }
+}
+
 ::selection {
   background-color: var(--muted);
   color: var(--bg-black);
