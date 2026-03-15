@@ -1,0 +1,18 @@
+@import "../main/root.css";
+
+#taskbar-calendar-container {
+    width: 300px;
+    height: 300px;
+    position: fixed;
+    bottom: var(--taskbar-height);
+    right: 0;
+}
+
+#month {
+    flex-grow: 1;
+}
+
+.calendar-interface-button {
+    height: var(--interface-button-size);
+    width: var(--interface-button-size);
+}

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="css/main/interface.css">
     <link rel="stylesheet" href="css/initialization/initialization.css">
     <link rel="stylesheet" href="css/taskbar/taskbar.css">
+    <link rel="stylesheet" href="css/taskbar/calendar.css">
+    <link rel="stylesheet" href="css/taskbar/start_menu.css">
 </head>
 <body>
     <div id="crt-overlay"></div>
@@ -22,28 +24,48 @@
 
     <!-- Taskbar - This section is for navigation and to contain the items accessed by the user. -->
     <nav id="taskbar" class="interface-window">
-        <button id="taskbaer-start-button" class="interface-button">
-            <img src="assets/aurora.png" alt="Aurora">
-            <span>Iniciar</span>
-        </button>
 
-        <div class="interface-divider"></div>
-
-        <section id="taskbar-apps">
-
+        <!-- Taskbar interface -->
+        <section id="taskbar-container">
+            <button id="taskbaer-start-button" class="interface-button">
+                <img src="assets/aurora.png" alt="Aurora">
+                <span>Iniciar</span>
+            </button>
+            
+            <div class="interface-divider"></div>
+            
+            <section id="taskbar-apps">
+                
+            </section>
+            
+            <div class="interface-divider"></div>
+            
+            <div id="taskbar-system" class="interface-field">
+                <button id="taskbar-calendar" class="interface-button">
+                    <img src="assets/calendar.png" alt="calendar">
+                </button>
+                <p id="taskbar-clock"></p>
+            </div>
         </section>
 
-        <div class="interface-divider"></div>
+        <!-- Start menu -->
+        <section id="taskbar-menu-container">
+        </section>
 
-        <div id="taskbar-system" class="interface-field">
-            <button id="taskbar-calendar" class="interface-button">
-                <img src="assets/calendar.png" alt="calendar">
-            </button>
-            <p id="taskbar-clock"></p>
-        </div>
+        <!-- Calendar -->
+        <section id="taskbar-calendar-container" class="interface-window">
+            <div id="titlebar-calendar" class="interface-title-bar">
+                <p id="month">Maio - 2025</p>
+                <button class="calendar-interface-button interface-button" onclick="plusMonth()"> ▲ </button>
+                <button class="calendar-interface-button interface-button" onclick="minusMonth()"> ▼ </button>
+            </div>
+            <div id="container-dates">
+            </div>
+        </section>
     </nav>
 
     <script src="js/initialization/initialization.js" defer></script>
     <script src="js/taskbar/taskbar.js" defer></script>
+    <script src="js/taskbar/calendar.js" defer></script>
 </body>
 </html>
