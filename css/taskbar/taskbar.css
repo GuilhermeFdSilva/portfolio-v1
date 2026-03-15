@@ -1,4 +1,4 @@
-@import "root.css";
+@import "../main/root.css";
 
 #taskbar {
     position: fixed;
@@ -8,6 +8,10 @@
     height: var(--taskbar-height);
     padding: var(--taskbar-content-padding);
     background-color: var(--bg-gray);
+}
+
+#taskbar-container {
+    width: 100%;
     display: flex;
     gap: var(--taskbar-content-gap);
 }
