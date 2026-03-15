@@ -6,21 +6,21 @@
     right: 0;
     bottom: 0;
     height: var(--taskbar-height);
-    padding: var(--taskbar-content-padding);
+    padding: var(--interface-content-padding);
     background-color: var(--bg-gray);
 }
 
 #taskbar-container {
     width: 100%;
     display: flex;
-    gap: var(--taskbar-content-gap);
+    gap: var(--interface-content-gap);
 }
 
 #taskbaer-start-button {
     height: var(--taskbar-button-height);
     padding: var(--taskbar-button-padding);
     display: flex;
-    gap: var(--taskbar-content-gap);
+    gap: var(--interface-content-gap);
     align-items: center;
 }
 
@@ -33,15 +33,15 @@
 }
 
 #taskbar-system {
-    padding: var(--taskbar-content-padding);
+    padding: var(--interface-content-padding);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--taskbar-content-gap);
+    gap: var(--interface-content-gap);
 }
 
 #taskbar-calendar {
-    height: var(--taskbar-calendar-button);
+    height: var(--interface-button-size);
     padding: 2px;
 }
 
