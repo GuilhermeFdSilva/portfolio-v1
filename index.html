@@ -55,11 +55,13 @@
         <!-- Calendar -->
         <section id="taskbar-calendar-container" class="interface-window">
             <div id="titlebar-calendar" class="interface-title-bar">
-                <p id="month">Maio - 2025</p>
-                <button class="calendar-interface-button interface-button" onclick="plusMonth()"> ▲ </button>
-                <button class="calendar-interface-button interface-button" onclick="minusMonth()"> ▼ </button>
+                <p id="month-year"></p>
+                <button class="calendar-interface-button interface-button" onclick="minusMonth()"> ▲ </button>
+                <button class="calendar-interface-button interface-button" onclick="plusMonth()"> ▼ </button>
             </div>
-            <div id="container-dates">
+            <div>
+                <div id="container-dates" class="interface-field">
+                </div>
             </div>
         </section>
     </nav>

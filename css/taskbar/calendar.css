@@ -8,11 +8,17 @@
     right: 0;
 }
 
-#month {
-    flex-grow: 1;
+#month-year {
+    width: var(--calendar-month-field-width);
+    font-size: var(--font-size-small);
 }
 
 .calendar-interface-button {
     height: var(--interface-button-size);
     width: var(--interface-button-size);
+}
+
+#container-dates {
+    height: var(--calendar-dates-height);
+    width: 90%;
 }

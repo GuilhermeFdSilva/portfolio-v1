@@ -27,6 +27,7 @@
     --interface-content-gap: 5px;
     --interface-content-padding: 5px;
     --interface-title-background: linear-gradient(to top, var(--primary), var(--secondary));
+    --interface-title-height: 46px;
 
     --taskbar-button-height: 50px;
     --taskbar-button-padding: 8px;
@@ -35,4 +36,12 @@
                         var(--interface-content-padding) * 2 +
                         var(--interface-window-shadow) * 2
                     );
+    --calendar-month-field-width: calc(
+                        100% - 2 *
+                        (var(--interface-button-size) -
+                        var(--interface-content-gap)));
+    --calendar-dates-height: calc(
+                        90% -
+                        var(--interface-title-height)
+    );
 }
