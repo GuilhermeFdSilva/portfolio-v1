@@ -9,6 +9,7 @@
 }
 
 .interface-title-bar {
+    height: var(--interface-title-height);
     display: flex;
     align-items: center;
     gap: var(--interface-content-gap);

@@ -15,6 +15,7 @@
     --off-gray: #ECECEC;
 
     --primary: #2C73FF;
+    --primary-black: #083590;
     --secondary: #00D9FF;
 
     --terminal: #00e500;
@@ -27,7 +28,7 @@
     --interface-content-gap: 5px;
     --interface-content-padding: 5px;
     --interface-title-background: linear-gradient(to top, var(--primary), var(--secondary));
-    --interface-title-height: 46px;
+    --interface-title-height: 42px;
 
     --taskbar-button-height: 50px;
     --taskbar-button-padding: 8px;
@@ -36,12 +37,21 @@
                         var(--interface-content-padding) * 2 +
                         var(--interface-window-shadow) * 2
                     );
+    --calendar-container-size: 300px;
     --calendar-month-field-width: calc(
                         100% - 2 *
                         (var(--interface-button-size) -
-                        var(--interface-content-gap)));
+                        var(--interface-content-gap))
+                    );
+    --calendar-dates-width: calc(
+                        var(--calendar-container-size) -
+                        2 * var(--interface-button-shadow) - 
+                        2 * var(--interface-content-gap)
+                    );
     --calendar-dates-height: calc(
-                        90% -
+                        var(--calendar-container-size) -
+                        2 * var(--interface-button-shadow) - 
+                        2 * var(--interface-content-gap) -
                         var(--interface-title-height)
-    );
+                    );
 }
