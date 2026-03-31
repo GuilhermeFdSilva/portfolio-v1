@@ -1,8 +1,9 @@
+/** HTML Elements */
 const bootDisplay = document.getElementById("boot");
 const terminal = document.getElementById("terminal");
 const skip = document.getElementById("skip");
 
-// Texts for the boot
+/** Texts for the boot  */
 const bootLines = [
 "AuroraOS BIOS v1.0",
 "Copyright (C) 2026 GuilhermeFdSilva",
@@ -38,7 +39,7 @@ const bootLines = [
 { type: "end" } // Sentinel for the last line
 ];
 
-// Function to close the system boot
+/** Function to close the system boot */
 function startSystem () {
     terminal.classList.add("exit");
 
@@ -50,12 +51,12 @@ function startSystem () {
     document.removeEventListener("click", startSystem);
 }
 
-// This function generates a promise to wait for the next line or letter. It receives the waiting time
+/** This function generates a promise to wait for the next line or letter. It receives the waiting time */
 function delay(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Generates a random number for the line delay
+/** Generates a random number for the line delay */
 function lineRandomDelay(textLength) {
     const min = textLength * 4;
     const max = textLength * 6;
@@ -63,13 +64,13 @@ function lineRandomDelay(textLength) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-// Add the listeners to finalize the boot
+/** Add the listeners to finalize the boot */
 function addExitListeners() {
     document.addEventListener("keydown", startSystem);
     document.addEventListener("touchend", startSystem);
 }
 
-// Changes the visibility of the skip and cursor
+/** Changes the visibility of the skip and cursor */
 function changeVisibility() {
     skip.style.display = "none";
 
@@ -77,7 +78,7 @@ function changeVisibility() {
     bootDisplay.classList.add("loading-complete");
 }
 
-// Iteration to generate the typing effect in the terminal
+/** Iteration to generate the typing effect in the terminal */
 async function typeBoot(){
     for (const text of bootLines){
         const line = document.createElement("p");
@@ -108,19 +109,19 @@ async function typeBoot(){
     }
 }
 
-// Skip listener on ESC
+/** Listener to skip on ESC  */
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
         startSystem();
     }
 });
 
-// Skip listener on click or touch
+/** Skip on click or touch */
 document.addEventListener("click", (e) => {
     if (e.target === skip) {
         startSystem();
     }
 });
 
-// Initialize the Iteration
+/** Initial calls */
 typeBoot();
