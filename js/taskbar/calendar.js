@@ -1,6 +1,7 @@
 const calendarContainer = document.getElementById("taskbar-calendar-container");
 const containerDates = document.getElementById("container-dates");
 const monthsYearField = document.getElementById("month-year");
+const button = document.getElementById("taskbar-calendar");
 
 const daysWeek = ["D", "S", "T", "Q", "Q", "S", "S"];
 const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -106,18 +107,34 @@ function setVisibility() {
     }
 }
 
-updateMonthYear();
-setVisibility();
+function resetDay() {
+    month = now.getMonth();
+    year = now.getFullYear();
+    
+    daysInMonth = new Date(year, month + 1, 0).getDate();
+    firstDay = new Date(year, month, 1).getDay();
+    previousMonthDays = new Date(year, month, 0).getDate();
+}
 
 function switchcalendarVisibility() {
     visible = !visible;
 
     setVisibility();
-
-    month = now.getMonth();
-    year = now.getFullYear();
-
-    daysInMonth = new Date(year, month + 1, 0).getDate();
-    firstDay = new Date(year, month, 1).getDay();
-    previousMonthDays = new Date(year, month, 0).getDate();
+    resetDay();
 }
+
+button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        switchcalendarVisibility();
+})
+
+document.addEventListener("click", (event) => {
+    if (!containerDates.contains(event.target)) {
+        if (visible) {
+            switchcalendarVisibility();
+        }
+    }
+});
+
+updateMonthYear();
+setVisibility();
