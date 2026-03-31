@@ -1,7 +1,9 @@
+/** HTML Elements */
 const startButton = document.getElementById("taskbaer-start-button");
 const caledar = document.getElementById("taskbar-calendar");
 const clock = document.getElementById("taskbar-clock");
 
+/** Adjust the time to the desired format */
 function timeFormat(date) {
     let hours = date?.getHours();
     let minutes = date?.getMinutes();
@@ -12,6 +14,7 @@ function timeFormat(date) {
     return hours + ":" + minutes
 }
 
+/** Updates the time regularly */
 function updateTime() {
     const dateTime = new Date();
     const formattedTime = timeFormat(dateTime);
@@ -21,4 +24,5 @@ function updateTime() {
     setTimeout(updateTime, 1000);
 }
 
+/** Initial calls */
 updateTime();
