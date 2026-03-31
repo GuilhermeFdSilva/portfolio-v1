@@ -1,26 +1,34 @@
+/** HTML Elements */
 const calendarContainer = document.getElementById("taskbar-calendar-container");
 const containerDates = document.getElementById("container-dates");
 const monthsYearField = document.getElementById("month-year");
 const button = document.getElementById("taskbar-calendar");
 
+/** Regular Strings */
 const daysWeek = ["D", "S", "T", "Q", "Q", "S", "S"];
 const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
+/** Current date */
 const now = new Date();
-
 const today = now.getDate();
 const currentMonth = now.getMonth();
 const currentYear = now.getFullYear();
 
-let month = now.getMonth();
-let year = now.getFullYear();
+/** Display month, initially instantiated as the current month */
+let displayMonth = currentMonth;
+let displayYear = currentYear;
 
-let daysInMonth = new Date(year, month + 1, 0).getDate();
-let firstDay = new Date(year, month, 1).getDay();
-let previousMonthDays = new Date(year, month, 0).getDate();
+/** Information for display current month */
+let daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
+let firstDay = new Date(displayYear, displayMonth, 1).getDay();
+let previousMonthDays = new Date(displayYear, displayMonth, 0).getDate();
 
+/** Define the calendar visibility */
 let visible = false;
 
+/**
+ * Insert the initials of the days of the week into the calendar
+ */
 function setDaysOfWeek () {
     daysWeek.forEach(element => {
         let dayOfWeek = document.createElement('p');
@@ -30,7 +38,12 @@ function setDaysOfWeek () {
     });
 }
 
-function updateDates() {
+/**
+ * Fill in the fields for the days of the month, according to the parameters
+ */
+function updateDays() {
+    monthsYearField.innerText = months[displayMonth] + " - " + displayYear;
+
     containerDates.innerHTML = "";
 
     setDaysOfWeek();
@@ -56,7 +69,7 @@ function updateDates() {
             color = "no-day-month";
         }
 
-        if (month == currentMonth && year == currentYear && textDay == today) {
+        if (displayMonth == currentMonth && displayYear == currentYear && textDay == today) {
             day.classList.add("today");
         }
         
@@ -67,38 +80,48 @@ function updateDates() {
     }
 }
 
+/**
+ * Updates the month's information for display
+ */
 function updateMonthYear() {
-    daysInMonth = new Date(year, month + 1, 0).getDate();
-    firstDay = new Date(year, month, 1).getDay();
-    previousMonthDays = new Date(year, month, 0).getDate();
+    daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
+    firstDay = new Date(displayYear, displayMonth, 1).getDay();
+    previousMonthDays = new Date(displayYear, displayMonth, 0).getDate();
 
-    monthsYearField.innerText = months[month] + " - " + year;
-
-    updateDates();
+    updateDays();
 }
 
+/**
+ * Increase the display month
+ */
 function plusMonth() {
-    month++;
+    displayMonth++;
 
-    if (month > 11) {
-        month = 0;
-        year++;
+    if (displayMonth > 11) {
+        displayMonth = 0;
+        displayYear++;
     }
 
     updateMonthYear();
 }
 
+/**
+ * Decreases the display month
+ */
 function minusMonth() {
-    month--;
+    displayMonth--;
     
-    if (month < 0) {
-        month = 11;
-        year--;
+    if (displayMonth < 0) {
+        displayMonth = 11;
+        displayYear--;
     }
 
     updateMonthYear();
 }
 
+/**
+ * Change calendar visibility
+ */
 function setVisibility() {
     if (visible) {
         calendarContainer.style.display = "block";
@@ -107,15 +130,19 @@ function setVisibility() {
     }
 }
 
+/**
+ * Resets the display date to the current month
+ */
 function resetDay() {
-    month = now.getMonth();
-    year = now.getFullYear();
-    
-    daysInMonth = new Date(year, month + 1, 0).getDate();
-    firstDay = new Date(year, month, 1).getDay();
-    previousMonthDays = new Date(year, month, 0).getDate();
+    displayMonth = now.getMonth();
+    displayYear = now.getFullYear();
+
+    updateMonthYear();
 }
 
+/**
+ * Updates calendar visibility
+ */
 function switchcalendarVisibility() {
     visible = !visible;
 
@@ -123,11 +150,17 @@ function switchcalendarVisibility() {
     resetDay();
 }
 
+/**
+ * Listener for the calendar access button
+ */
 button.addEventListener("click", (event) => {
         event.stopPropagation();
         switchcalendarVisibility();
 })
 
+/**
+ * Listener to close the calendar if the user clicks elsewhere on the screen
+ */
 document.addEventListener("click", (event) => {
     if (!calendarContainer.contains(event.target)) {
         if (visible) {
@@ -136,5 +169,8 @@ document.addEventListener("click", (event) => {
     }
 });
 
+/**
+ * Initial calls
+ */
 updateMonthYear();
 setVisibility();
