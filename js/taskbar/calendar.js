@@ -129,7 +129,7 @@ button.addEventListener("click", (event) => {
 })
 
 document.addEventListener("click", (event) => {
-    if (!containerDates.contains(event.target)) {
+    if (!calendarContainer.contains(event.target)) {
         if (visible) {
             switchcalendarVisibility();
         }
