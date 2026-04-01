@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/taskbar/start_menu.css">
 </head>
 <body>
+    <!-- Screem filter -->
     <div id="crt-overlay"></div>
 
     <!-- Initialization - Section to contain the buffer screen -->
@@ -27,6 +28,7 @@
 
         <!-- Taskbar interface -->
         <section id="taskbar-container">
+            <!-- Start button -->
             <button id="taskbaer-start-button" class="interface-button">
                 <img src="assets/aurora.png" alt="Aurora">
                 <span>Iniciar</span>
@@ -34,16 +36,21 @@
             
             <div class="interface-divider"></div>
             
+            <!-- Tasks -->
             <section id="taskbar-apps">
                 
             </section>
             
             <div class="interface-divider"></div>
             
+            <!-- System info, calendar and clock -->
             <div id="taskbar-system" class="interface-field">
+                <!-- Button to acess the calendar -->
                 <button id="taskbar-calendar" class="interface-button">
                     <img src="assets/calendar.png" alt="calendar">
                 </button>
+
+                <!-- Clock field -->
                 <p id="taskbar-clock"></p>
             </div>
         </section>
@@ -54,15 +61,15 @@
 
         <!-- Calendar -->
         <section id="taskbar-calendar-container" class="interface-window">
+            <!-- Calendar tiblebar  -->
             <div id="titlebar-calendar" class="interface-title-bar">
                 <p id="month-year"></p>
                 <button class="calendar-interface-button interface-button" onclick="minusMonth()"> ▲ </button>
                 <button class="calendar-interface-button interface-button" onclick="plusMonth()"> ▼ </button>
             </div>
-            <div>
-                <div id="container-dates" class="interface-field">
-                </div>
-            </div>
+
+            <!-- Days and days of the week container -->
+            <div id="container-dates" class="interface-field"></div>
         </section>
     </nav>
 
