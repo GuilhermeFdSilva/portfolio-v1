@@ -30,9 +30,16 @@ let visible = false;
  * Insert the initials of the days of the week into the calendar
  */
 function setDaysOfWeek () {
-    daysWeek.forEach(element => {
+    daysWeek.forEach((element, index) => {
         let dayOfWeek = document.createElement('p');
-        dayOfWeek.classList.add("day", "days-week");
+        dayOfWeek.classList.add("day-field");
+        
+        if (index == 0 || index == 6) {
+            dayOfWeek.classList.add("weekend");
+        } else {
+            dayOfWeek.classList.add("week");
+        }
+        
         dayOfWeek.textContent = element;
         containerDates.appendChild(dayOfWeek); 
     });
@@ -50,27 +57,32 @@ function updateDays() {
     
     let textDay = firstDay == 0 ? 1 : previousMonthDays - (firstDay - 1);
     let previousDays = textDay > 1;
-    let color = previousDays ? "no-day-month" : "day-month";
+    let color = previousDays ? "not-month-day" : "month-day";
 
-    for (let lines = 0; lines < 42; lines++) {
+    for (let fields = 0; fields < 42; fields++) {
         let day = document.createElement("p");
         let span = document.createElement("span");
         day.appendChild(span);
-        day.classList.add("day");
+        day.classList.add("day-field");
         
         if (previousDays && textDay > previousMonthDays) {
             textDay = 1;
             previousDays = false;
-            color = "day-month";
+            color = "month-day";
         }
         
         if (!previousDays && textDay > daysInMonth) {
             textDay = 1;
-            color = "no-day-month";
+            previousDays = true;
+            color = "not-month-day";
         }
 
-        if (displayMonth == currentMonth && displayYear == currentYear && textDay == today) {
+        if (displayMonth == currentMonth && displayYear == currentYear && textDay == today && !previousDays) {
             day.classList.add("today");
+        }
+
+        if (fields % 7 == 0 || (fields - 6) % 7 == 0) {
+            day.classList.add("weekend-day");
         }
         
         day.classList.add(color);
@@ -124,7 +136,7 @@ function minusMonth() {
  */
 function setVisibility() {
     if (visible) {
-        calendarContainer.style.display = "block";
+        calendarContainer.style.display = "flex";
     } else {
         calendarContainer.style.display = "none";
     }

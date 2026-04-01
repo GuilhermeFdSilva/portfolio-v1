@@ -82,6 +82,7 @@ function changeVisibility() {
 async function typeBoot(){
     for (const text of bootLines){
         const line = document.createElement("p");
+        line.classList.add("no-select");
         bootDisplay.appendChild(line);
 
         if (text === "") {

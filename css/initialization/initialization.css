@@ -1,7 +1,7 @@
 @import "../main/root.css";
 
 #terminal {
-    background-color: var(--bg-black);
+    background-color: var(--terminal-bg);
     font-family: var(--font-family);
     color: var(--terminal);
     line-height: 1.6rem;

@@ -9,11 +9,14 @@
     display: flex;
     flex-direction: column;
     gap: var(--interface-content-gap);
+    padding-bottom: var(--interface-content-gap);
 }
 
 #month-year {
     width: var(--calendar-month-field-width);
     font-size: var(--font-size-small);
+    color: var(--text);
+    cursor: default;
 }
 
 .calendar-interface-button {
@@ -22,7 +25,7 @@
 }
 
 #container-dates {
-    background-color: var(--dark-gray);
+    background-color: var(--gray-light);
     gap: 1px;
     width: var(--calendar-dates-width);
     height: var(--calendar-dates-height);
@@ -32,31 +35,46 @@
     grid-template-rows: repeat(7, 1fr);
 }
 
-.day {
-    background-color: var(--bg-gray);
+.day-field {
+    background-color: var(--surface);
     width: 100%;
     height: 100%;
+    padding-top: 2px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.days-week {
-    color: var(--primary-black);
+.week {
+    background-color: var(--primary-dark);
+    color: var(--text);
+    cursor: default;
 }
 
-.day-month  {
+.weekend {
+    background-color: var(--primary-light);
+    cursor: default;
+}
+
+.weekend-day {
+    background-color: rgb(var(--primary-light-rgb), 0.4);
+    
+}
+
+.month-day  {
     cursor: pointer;
 }
 
-.no-day-month {
-    color: var(--dark-gray);
+.month-day:hover {
+    background-color: var(--gray-dark);
+    color: var(--text-muted);
 }
 
-.day-month:hover {
-    background-color: var(--dark-gray);
+.not-month-day {
+    color: var(--text-dark-muted);
+    cursor: default;
 }
 
 .today {
-    border: var(--interface-button-focus-shadow) solid red;
+    border: var(--interface-button-focus-shadow) solid var(--accent);
 }

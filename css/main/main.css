@@ -1,12 +1,12 @@
+@import 'root.css';
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: var(--font-family);
   font-size:  var(--font-size);
-  cursor: default;
 }
-
 
 @media (max-width: 510px) {
     * {
@@ -15,6 +15,10 @@
 }
 
 ::selection {
-  background-color: var(--muted);
-  color: var(--bg-black);
+  background-color: var(--primary);
+  color: var(--text);
+}
+
+.no-select {
+  user-select: none;
 }

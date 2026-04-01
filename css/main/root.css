@@ -2,23 +2,40 @@
 
 :root {
     --font-family: "Press Start 2P", system-ui;
-    --font-color: #222222;
+
+    --text: #EAEAF0;
+    --text-muted: #A0A0B0;
+    --text-dark: #1A1A1A;
+    --text-dark-muted: #616161;
 
     --font-size: 16px;
     --font-size-small: 12px;
 
-    --bg-black: #151515;
-    --black: #313131;
+    --terminal-bg: #0F0F14;
+    --terminal: #39FF14;
 
-    --dark-gray: #767676;
-    --bg-gray: #c6c6c6;
-    --off-gray: #ECECEC;
+    --gray-dark: #2A2A33;
+    --gray: #6B6B7A;
+    --gray-light: #CFCFE6;
 
-    --primary: #2C73FF;
-    --primary-black: #083590;
-    --secondary: #00D9FF;
+    --surface: #969696;
 
-    --terminal: #00e500;
+    --primary: #7B2EFF;
+    --primary-dark: #5A1FCC;
+    --primary-light: #9A5BFF;
+    --primary-light-rgb: 154, 91, 255;
+
+    --secondary: #2EFFA8;
+    --secondary-dark: #1FCC7A;
+    --secondary-light: #5CFFC1;
+
+    --accent: #FF8A2E;
+    --accent-dark: #CC6B1F;
+    --accent-light: #FFAA5C;
+
+    --info: #2EC4FF;
+    --info-dark: #1F9FCC;
+    --info-light: #5CD6FF;
 
     --interface-window-shadow: 4px;
     --interface-button-shadow: 3px;
@@ -27,31 +44,32 @@
     --interface-button-size: 30px;
     --interface-content-gap: 5px;
     --interface-content-padding: 5px;
-    --interface-title-background: linear-gradient(to top, var(--primary), var(--secondary));
     --interface-title-height: 42px;
+    --interface-title-background: var(--primary-dark);
 
-    --taskbar-button-height: 50px;
-    --taskbar-button-padding: 8px;
+    --taskbar-start-button-height: 50px;
+    --taskbar-start-button-padding: 8px;
     --taskbar-height: calc(
-                        var(--taskbar-button-height) +
-                        var(--interface-content-padding) * 2 +
-                        var(--interface-window-shadow) * 2
-                    );
+        var(--taskbar-start-button-height) +
+        var(--interface-content-padding) * 2 +
+        var(--interface-window-shadow) * 2
+    );
+
     --calendar-container-size: 300px;
     --calendar-month-field-width: calc(
-                        100% - 2 *
-                        (var(--interface-button-size) -
-                        var(--interface-content-gap))
-                    );
+        var(--calendar-container-size) - 2 *
+        (var(--interface-button-size) -
+        var(--interface-content-gap))
+    );
     --calendar-dates-width: calc(
-                        var(--calendar-container-size) -
-                        2 * var(--interface-button-shadow) - 
-                        2 * var(--interface-content-gap)
-                    );
+        var(--calendar-container-size) -
+        2 * var(--interface-button-shadow) - 
+        2 * var(--interface-content-gap)
+    );
     --calendar-dates-height: calc(
-                        var(--calendar-container-size) -
-                        2 * var(--interface-button-shadow) - 
-                        2 * var(--interface-content-gap) -
-                        var(--interface-title-height)
-                    );
+        var(--calendar-container-size) -
+        2 * var(--interface-button-shadow) - 
+        2 * var(--interface-content-gap) -
+        var(--interface-title-height)
+    );
 }

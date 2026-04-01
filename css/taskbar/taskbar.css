@@ -7,7 +7,7 @@
     bottom: 0;
     height: var(--taskbar-height);
     padding: var(--interface-content-padding);
-    background-color: var(--bg-gray);
+    background-color: var(--surface);
 }
 
 #taskbar-container {
@@ -17,8 +17,8 @@
 }
 
 #taskbaer-start-button {
-    height: var(--taskbar-button-height);
-    padding: var(--taskbar-button-padding);
+    height: var(--taskbar-start-button-height);
+    padding: var(--taskbar-start-button-padding);
     display: flex;
     gap: var(--interface-content-gap);
     align-items: center;
@@ -47,4 +47,8 @@
 
 #taskbar-calendar img {
     height: 100%;
+}
+
+#taskbar-clock {
+    cursor: default;
 }
