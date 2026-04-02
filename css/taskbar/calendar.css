@@ -1,5 +1,19 @@
 @import "../main/root.css";
 
+
+#taskbar-calendar {
+    height: var(--interface-button-size);
+    padding: 2px;
+}
+
+#taskbar-calendar img {
+    height: 100%;
+}
+
+#taskbar-clock {
+    cursor: default;
+}
+
 #taskbar-calendar-container {
     width: var(--calendar-container-size);
     height: var(--calendar-container-size);
