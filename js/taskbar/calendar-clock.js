@@ -1,6 +1,4 @@
 /** HTML Elements */
-const startButton = document.getElementById("taskbaer-start-button");
-const caledar = document.getElementById("taskbar-calendar");
 const clock = document.getElementById("taskbar-clock");
 
 /** Adjust the time to the desired format */
