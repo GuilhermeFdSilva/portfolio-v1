@@ -1,0 +1,29 @@
+@import '../main/root.css';
+
+#taskbar-menu-container {
+    position: fixed;
+    bottom: var(--taskbar-height);
+    left: 0;
+}
+
+#taskbar-menu-title {
+    background-color: var(--interface-title-background);
+    width: var(--interface-title-height);
+    height: var(--start-menu-height);
+    padding: var(--interface-content-padding);
+    writing-mode: sideways-rl;
+    text-orientation: upright;
+    transform: rotate(180deg);
+    display: flex;
+    align-items: center;
+
+}
+
+#taskbar-menu-title h3 {
+    font-size: var(--font-size-large);
+    color: var(--text)
+}
+
+#taskbar-menu-title h3 span {
+    font-weight: 100;
+}

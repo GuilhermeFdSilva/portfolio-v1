@@ -8,6 +8,7 @@
     --text-dark: #1A1A1A;
     --text-dark-muted: #616161;
 
+    --font-size-large: 22px;
     --font-size: 16px;
     --font-size-small: 12px;
 
@@ -54,6 +55,8 @@
         var(--interface-content-padding) * 2 +
         var(--interface-window-shadow) * 2
     );
+
+    --start-menu-height: 400px;
 
     --calendar-container-size: 300px;
     --calendar-month-field-width: calc(
