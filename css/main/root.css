@@ -66,6 +66,11 @@
     --start-menu-option-height: 50px;
     --start-menu-option-padding: 10px;
     --start-menu-option-img-width: 35px;
+    --start-menu-suboptions-right-position: calc(
+        var(--start-menu-option-width) +
+        var(--interface-window-shadow)
+    );
+    --start-menu-suboptions-y-position: -4px;
 
     --calendar-container-size: 300px;
     --calendar-month-field-width: calc(
