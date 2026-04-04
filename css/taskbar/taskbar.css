@@ -16,7 +16,7 @@
     gap: var(--interface-content-gap);
 }
 
-#taskbaer-start-button {
+#taskbar-start-button {
     height: var(--taskbar-start-button-height);
     padding: var(--taskbar-start-button-padding);
     display: flex;
@@ -24,7 +24,7 @@
     align-items: center;
 }
 
-#taskbaer-start-button img {
+#taskbar-start-button img {
     height: 100%;
 }
 
