@@ -56,7 +56,16 @@
         var(--interface-window-shadow) * 2
     );
 
-    --start-menu-height: 400px;
+    --start-menu-min-height: 400px;
+    --start-menu-width: 340px;
+    --start-menu-option-width: calc(
+        var(--start-menu-width) -
+        var(--interface-title-height) -
+        2 * var(--interface-window-shadow)
+    );
+    --start-menu-option-height: 50px;
+    --start-menu-option-padding: 10px;
+    --start-menu-option-img-width: 35px;
 
     --calendar-container-size: 300px;
     --calendar-month-field-width: calc(
