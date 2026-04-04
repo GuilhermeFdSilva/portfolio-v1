@@ -2,7 +2,7 @@
 const calendarContainer = document.getElementById("taskbar-calendar-container");
 const containerDates = document.getElementById("container-dates");
 const monthsYearField = document.getElementById("month-year");
-const button = document.getElementById("taskbar-calendar");
+const calendarButton = document.getElementById("taskbar-calendar");
 
 /** Regular Strings */
 const daysWeek = ["D", "S", "T", "Q", "Q", "S", "S"];
@@ -24,7 +24,7 @@ let firstDay = new Date(displayYear, displayMonth, 1).getDay();
 let previousMonthDays = new Date(displayYear, displayMonth, 0).getDate();
 
 /** Define the calendar visibility */
-let visible = false;
+let calendarVisible = false;
 
 /**
  * Insert the initials of the days of the week into the calendar
@@ -134,8 +134,8 @@ function minusMonth() {
 /**
  * Change calendar visibility
  */
-function setVisibility() {
-    if (visible) {
+function setCalendarVisibility() {
+    if (calendarVisible) {
         calendarContainer.style.display = "flex";
     } else {
         calendarContainer.style.display = "none";
@@ -155,28 +155,28 @@ function resetDay() {
 /**
  * Updates calendar visibility
  */
-function switchcalendarVisibility() {
-    visible = !visible;
+function switchCalendarVisibility() {
+    calendarVisible = !calendarVisible;
 
-    setVisibility();
+    setCalendarVisibility();
     resetDay();
 }
 
 /**
- * Listener for the calendar access button
+ * Listener for the calendar access calendarButton
  */
-button.addEventListener("click", (event) => {
+calendarButton.addEventListener("click", (event) => {
         event.stopPropagation();
-        switchcalendarVisibility();
-})
+        switchCalendarVisibility();
+});
 
 /**
  * Listener to close the calendar if the user clicks elsewhere on the screen
  */
 document.addEventListener("click", (event) => {
     if (!calendarContainer.contains(event.target)) {
-        if (visible) {
-            switchcalendarVisibility();
+        if (calendarVisible) {
+            switchCalendarVisibility();
         }
     }
 });
@@ -185,4 +185,4 @@ document.addEventListener("click", (event) => {
  * Initial calls
  */
 updateMonthYear();
-setVisibility();
+setCalendarVisibility();
