@@ -18,6 +18,7 @@
     width: var(--calendar-container-size);
     height: var(--calendar-container-size);
     position: fixed;
+    z-index: 8500;
     bottom: var(--taskbar-height);
     right: 0;
     display: flex;
