@@ -3,6 +3,7 @@
 #start-menu-container {
     width: var(--start-menu-width);
     position: fixed;
+    z-index: 8500;
     bottom: var(--taskbar-height);
     left: 0;
     display: flex;
@@ -42,6 +43,7 @@
 }
 
 .start-menu-option {
+    position: relative;
     cursor: pointer;
     width: var(--start-menu-option-width);
     display: flex;
@@ -49,6 +51,15 @@
     padding-left: var(--start-menu-option-padding);
     gap: var(--interface-content-gap);
     height: var(--start-menu-option-height);
+}
+
+.start-menu-option::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 8px;
+    height: 100%;
 }
 
 .start-menu-option:hover {
@@ -74,10 +85,25 @@
 }
 
 .start-menu-suboptions {
+    position: absolute;
+    top: var(--start-menu-suboptions-y-position);
+    left: var(--start-menu-suboptions-right-position);
     display: none;
-    z-index: 5000;
+    z-index: 8000;
 }
 
 .start-menu-option:hover .start-menu-suboptions {
+    display: block;
+}
+
+.start-menu-shutdown-options {
+    position: absolute;
+    bottom: var(--start-menu-suboptions-y-position);
+    left: var(--start-menu-suboptions-right-position);
+    display: none;
+    z-index: 8000;
+}
+
+.start-menu-option:hover .start-menu-shutdown-options {
     display: block;
 }
