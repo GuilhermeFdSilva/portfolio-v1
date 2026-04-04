@@ -23,9 +23,23 @@ function switchStartMenuVisibility() {
     setStartMenuVisibility();
 }
 
+/**
+ * Listener for the start menu access startMenuButton
+ */
 startMenuButton.addEventListener("click", (event) => {
     event.stopPropagation();
     switchStartMenuVisibility();
+});
+
+/**
+ * Listener to close the start menu if the user clicks elsewhere on the screen
+ */
+document.addEventListener("click", (event) => {
+    if (!startMenu.contains(event.target)) {
+        if (startMenuVisible) {
+            switchStartMenuVisibility();
+        }
+    }
 });
 
 setStartMenuVisibility();
