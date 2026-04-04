@@ -43,6 +43,16 @@
     border-bottom: var(--interface-divider-shadow) solid var(--gray-light);
 }
 
+.interface-horizontal-divider {
+    width: 98%;
+    height: 0;
+    margin: auto;
+    border-left: var(--interface-divider-shadow) solid var(--gray-dark);
+    border-right: var(--interface-divider-shadow) solid var(--gray-light);
+    border-top: var(--interface-divider-shadow) solid var(--gray-dark);
+    border-bottom: var(--interface-divider-shadow) solid var(--gray-light);
+}
+
 .interface-field {
     border-left: var(--interface-divider-shadow) solid var(--gray-dark);
     border-right: var(--interface-divider-shadow) solid var(--gray-light);
