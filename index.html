@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,15 +13,16 @@
     <link rel="stylesheet" href="css/taskbar/calendar.css">
     <link rel="stylesheet" href="css/taskbar/start_menu.css">
 </head>
+
 <body>
     <!-- Screem filter -->
     <div id="crt-overlay"></div>
 
     <!-- Initialization - Section to contain the buffer screen -->
     <section id="terminal">
-        <div id="boot" class="loading-started">
+        <article id="boot" class="loading-started">
             <p id="skip" class="no-select"> Press ESC or tap HERE to skip boot </p>
-        </div>
+        </article>
     </section>
 
     <!-- Taskbar - This section is for navigation and to contain the items accessed by the user. -->
@@ -33,18 +35,18 @@
                 <img src="assets/aurora.png" alt="Aurora">
                 <span>Iniciar</span>
             </button>
-            
+
             <div class="interface-divider"></div>
-            
+
             <!-- Tasks -->
             <section id="taskbar-apps">
-                
+
             </section>
-            
+
             <div class="interface-divider"></div>
-            
+
             <!-- System info, calendar and clock -->
-            <div id="taskbar-system" class="interface-field">
+            <section id="taskbar-system" class="interface-field">
                 <!-- Button to acess the calendar -->
                 <button id="taskbar-calendar" class="interface-button">
                     <img src="assets/calendar.png" alt="calendar">
@@ -52,36 +54,107 @@
 
                 <!-- Clock field -->
                 <p id="taskbar-clock"></p>
-            </div>
+            </section>
         </section>
 
         <!-- Start menu -->
-        <section id="taskbar-menu-container" class="interface-window">
+        <section id="start-menu-container" class="interface-window">
             <!-- Start menu system title -->
-            <div id="taskbar-menu-title">
+            <article id="start-menu-title">
                 <h3>
-                    Aurora <span> &copy; </span>
+                    Aurora
                 </h3>
-            </div>
+                <span>
+                    &copy;
+                </span>
+            </article>
 
-            <!-- System aplications -->
-            <div></div>
+            <!-- System container options -->
+            <section id="start-menu-options-main-container">
+                <!-- System aplications -->
+                <section id="start-menu-programs-container" class="start-menu-options-container">
+                    <section class="start-menu-option">
+                        <img src="assets/apps.png" alt="Log off" class="start-menu-option-img">
+                        <p class="start-menu-option-txt">
+                            Aplicativos
+                        </p>
+                        <p class="start-menu-option-arrow">
+                            ▶
+                        </p>
+                        <section class="start-menu-suboptions interface-window">
+                            <article class="start-menu-option">
+                                <img src="assets/apps.png" alt="Log off" class="start-menu-option-img">
+                                <p class="start-menu-option-txt">
+                                    Aplicativos
+                                </p>
+                            </article>
+                            <article class="start-menu-option">
+                                <img src="assets/apps.png" alt="Log off" class="start-menu-option-img">
+                                <p class="start-menu-option-txt">
+                                    Aplicativos
+                                </p>
+                            </article>
+                        </section>
+                    </section>
+                    <section class="start-menu-option">
+                        <img src="assets/docs.png" alt="Log off" class="start-menu-option-img">
+                        <p class="start-menu-option-txt">
+                            Documentos
+                        </p>
+                        <p class="start-menu-option-arrow">
+                            ▶
+                        </p>
+                        <section class="start-menu-suboptions interface-window">
+                            <article class="start-menu-option">
+                                <img src="assets/apps.png" alt="Log off" class="start-menu-option-img">
+                                <p class="start-menu-option-txt">
+                                    Aplicativos
+                                </p>
+                            </article>
+                            <article class="start-menu-option">
+                                <img src="assets/apps.png" alt="Log off" class="start-menu-option-img">
+                                <p class="start-menu-option-txt">
+                                    Aplicativos
+                                </p>
+                            </article>
+                        </section>
+                    </section>
+                </section>
 
-            <!-- System session options -->
-            <div></div>
+                <div class="interface-horizontal-divider"></div>
+
+                <!-- System session options -->
+                <section class="start-menu-options-container">
+                    <section class="start-menu-option">
+                        <img src="assets/logoff.png" alt="Log off" class="start-menu-option-img">
+                        <p class="start-menu-option-txt">
+                            Sair...
+                        </p>
+                    </section>
+                    <section class="start-menu-option">
+                        <img src="assets/power.png" alt="Power button" class="start-menu-option-img">
+                        <p class="start-menu-option-txt">
+                            Desligar...
+                        </p>
+                        <p class="start-menu-option-arrow">
+                            ▶
+                        </p>
+                    </section>
+                </section>
+            </section>
         </section>
 
         <!-- Calendar -->
         <section id="taskbar-calendar-container" class="interface-window">
             <!-- Calendar tiblebar  -->
-            <div id="titlebar-calendar" class="interface-title-bar">
+            <article id="titlebar-calendar" class="interface-title-bar">
                 <p id="month-year"></p>
                 <button class="calendar-interface-button interface-button" onclick="minusMonth()"> ▲ </button>
                 <button class="calendar-interface-button interface-button" onclick="plusMonth()"> ▼ </button>
-            </div>
+            </article>
 
             <!-- Days and days of the week container -->
-            <div id="container-dates" class="interface-field"></div>
+            <article id="container-dates" class="interface-field"></article>
         </section>
     </nav>
 
@@ -89,4 +162,5 @@
     <script src="js/taskbar/calendar-clock.js" defer></script>
     <script src="js/taskbar/calendar.js" defer></script>
 </body>
+
 </html>

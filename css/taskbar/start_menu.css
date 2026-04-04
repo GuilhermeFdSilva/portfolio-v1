@@ -1,29 +1,83 @@
 @import '../main/root.css';
 
-#taskbar-menu-container {
+#start-menu-container {
+    width: var(--start-menu-width);
     position: fixed;
     bottom: var(--taskbar-height);
     left: 0;
+    display: flex;
 }
 
-#taskbar-menu-title {
+#start-menu-title {
     background-color: var(--interface-title-background);
     width: var(--interface-title-height);
-    height: var(--start-menu-height);
+    min-height: var(--start-menu-min-height);
     padding: var(--interface-content-padding);
     writing-mode: sideways-rl;
     text-orientation: upright;
     transform: rotate(180deg);
     display: flex;
     align-items: center;
-
+    gap: var(--interface-content-gap);
 }
 
-#taskbar-menu-title h3 {
+#start-menu-title h3 {
     font-size: var(--font-size-large);
-    color: var(--text)
+    color: var(--text);
 }
 
-#taskbar-menu-title h3 span {
+#start-menu-title span {
     font-weight: 100;
+    font-size: var(--font-size-small);
+    color: var(--text);
+}
+
+#start-menu-options-main-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#start-menu-programs-container {
+    flex-grow: 1;
+}
+
+.start-menu-option {
+    cursor: pointer;
+    width: var(--start-menu-option-width);
+    display: flex;
+    align-items: center;
+    padding-left: var(--start-menu-option-padding);
+    gap: var(--interface-content-gap);
+    height: var(--start-menu-option-height);
+}
+
+.start-menu-option:hover {
+    background-color: var(--primary-dark);
+    color: var(--text);
+}
+
+.start-menu-option:active {
+    background-color: var(--primary);
+}
+
+.start-menu-option-img {
+    width: var(--start-menu-option-img-width);
+}
+
+.start-menu-option-txt {
+    padding-left: var(--start-menu-option-padding);
+}
+
+.start-menu-option-arrow {
+    position: absolute;
+    right: var(--start-menu-option-padding);
+}
+
+.start-menu-suboptions {
+    display: none;
+    z-index: 5000;
+}
+
+.start-menu-option:hover .start-menu-suboptions {
+    display: block;
 }
