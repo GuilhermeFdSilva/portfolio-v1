@@ -67,10 +67,6 @@
     color: var(--text);
 }
 
-.start-menu-option:active {
-    background-color: var(--primary);
-}
-
 .start-menu-option-img {
     width: var(--start-menu-option-img-width);
 }
