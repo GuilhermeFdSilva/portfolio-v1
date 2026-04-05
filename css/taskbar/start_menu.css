@@ -85,6 +85,7 @@
 }
 
 .start-menu-suboptions {
+    color: var(--text-dark);
     position: absolute;
     top: var(--start-menu-suboptions-y-position);
     left: var(--start-menu-suboptions-right-position);
@@ -97,6 +98,7 @@
 }
 
 .start-menu-shutdown-options {
+    color: var(--text-dark);
     position: absolute;
     bottom: var(--start-menu-suboptions-y-position);
     left: var(--start-menu-suboptions-right-position);
