@@ -86,7 +86,7 @@
     top: var(--start-menu-suboptions-y-position);
     left: var(--start-menu-suboptions-right-position);
     display: none;
-    z-index: 8000;
+    z-index: 8600;
 }
 
 .start-menu-option:hover .start-menu-suboptions {
@@ -99,9 +99,22 @@
     bottom: var(--start-menu-suboptions-y-position);
     left: var(--start-menu-suboptions-right-position);
     display: none;
-    z-index: 8000;
+    z-index: 8600;
 }
 
 .start-menu-option:hover .start-menu-shutdown-options {
     display: block;
+}
+
+@media (max-width: 640px) {
+    .start-menu-suboptions {
+        top: unset;
+        bottom: var(--start-menu-option-height);
+        left: 0;
+    }
+
+    .start-menu-shutdown-options {
+        bottom: var(--start-menu-option-height);
+        left: 0;
+    }
 }
