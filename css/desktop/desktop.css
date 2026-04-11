@@ -1,0 +1,10 @@
+@import "../main/root.css";
+
+main {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: var(--desktop-height);
+    background: var(--background);
+}

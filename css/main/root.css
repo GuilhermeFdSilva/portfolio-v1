@@ -20,6 +20,7 @@
     --gray-light: #CFCFE6;
 
     --surface: #969696;
+    --background: #DCD6F7;
 
     --primary: #7B2EFF;
     --primary-dark: #5A1FCC;
@@ -88,5 +89,10 @@
         2 * var(--interface-button-shadow) - 
         2 * var(--interface-content-gap) -
         var(--interface-title-height)
+    );
+
+    --desktop-height: calc(
+        100vh -
+        var(--taskbar-height)
     );
 }
