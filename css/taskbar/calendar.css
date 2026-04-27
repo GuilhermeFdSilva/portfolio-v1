@@ -34,11 +34,6 @@
     cursor: default;
 }
 
-.calendar-interface-button {
-    height: var(--interface-button-size);
-    width: var(--interface-button-size);
-}
-
 #container-dates {
     background-color: var(--gray-light);
     gap: 1px;
