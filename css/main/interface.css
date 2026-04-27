@@ -12,19 +12,32 @@
     height: var(--interface-title-height);
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--interface-content-gap);
     padding: var(--interface-content-padding);
     background: var(--interface-title-background);
     border-bottom: var(--interface-divider-shadow) solid var(--gray-dark);
 }
 
+.interface-title-bar article {
+    display: flex;
+    gap: var(--interface-content-gap);
+}
+
 .interface-button {
     background-color: var(--surface);
+    height: var(--interface-button-size);
+    min-width: var(--interface-button-size);
     border-left: var(--interface-button-shadow) solid var(--gray-light);
     border-right: var(--interface-button-shadow) solid var(--gray-dark);
     border-top: var(--interface-button-shadow) solid var(--gray-light);
     border-bottom: var(--interface-button-shadow) solid var(--gray-dark);
     cursor: pointer;
+}
+
+.interface-button p {
+    text-align: center;
+    padding: var(--interface-button-p-padding);
 }
 
 .interface-button:active {
@@ -33,6 +46,24 @@
     border-right: var(--interface-button-focus-shadow) solid var(--gray-light);
     border-top: var(--interface-button-focus-shadow) solid var(--gray-dark);
     border-bottom: var(--interface-button-focus-shadow) solid var(--gray-light);
+}
+
+.interface-close-button {
+    background-color: var(--accent-dark);
+    color: var(--text)
+}
+
+.interface-close-button:active {
+    background-color: var(--accent);
+}
+
+.interface-window-button {
+    padding: var(--interface-content-padding);
+    min-width: 100px;
+}
+
+.interface-window-button p {
+    padding: 0;
 }
 
 .interface-divider {
@@ -53,9 +84,23 @@
     border-bottom: var(--interface-divider-shadow) solid var(--gray-light);
 }
 
+.interface-main-content {
+    padding: var(--interface-content-padding);
+}
+
 .interface-field {
     border-left: var(--interface-divider-shadow) solid var(--gray-dark);
     border-right: var(--interface-divider-shadow) solid var(--gray-light);
     border-top: var(--interface-divider-shadow) solid var(--gray-dark);
     border-bottom: var(--interface-divider-shadow) solid var(--gray-light);
+}
+
+.interface-footer-content {
+    padding: var(--interface-content-padding);
+    display: flex;
+    justify-content: end;
+}
+
+.interface-draggable {
+    position: absolute;
 }

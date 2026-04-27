@@ -44,6 +44,7 @@
     --interface-button-focus-shadow: 4px;
     --interface-divider-shadow: 2px;
     --interface-button-size: 30px;
+    --interface-button-p-padding: 2px 0 0 2px;
     --interface-content-gap: 5px;
     --interface-content-padding: 5px;
     --interface-title-height: 42px;
