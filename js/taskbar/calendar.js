@@ -95,7 +95,7 @@ function updateDays() {
 /**
  * Updates the month's information for display
  */
-function updateMonthYear() {
+export function updateMonthYear() {
     daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
     firstDay = new Date(displayYear, displayMonth, 1).getDay();
     previousMonthDays = new Date(displayYear, displayMonth, 0).getDate();
@@ -106,7 +106,7 @@ function updateMonthYear() {
 /**
  * Increase the display month
  */
-function plusMonth() {
+export function plusMonth() {
     displayMonth++;
 
     if (displayMonth > 11) {
@@ -120,7 +120,7 @@ function plusMonth() {
 /**
  * Decreases the display month
  */
-function minusMonth() {
+export function minusMonth() {
     displayMonth--;
     
     if (displayMonth < 0) {
@@ -134,7 +134,7 @@ function minusMonth() {
 /**
  * Change calendar visibility
  */
-function setCalendarVisibility() {
+export function setCalendarVisibility() {
     if (calendarVisible) {
         calendarContainer.style.display = "flex";
     } else {
@@ -180,9 +180,3 @@ document.addEventListener("click", (event) => {
         }
     }
 });
-
-/**
- * Initial calls
- */
-updateMonthYear();
-setCalendarVisibility();

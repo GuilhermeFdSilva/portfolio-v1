@@ -11,7 +11,7 @@ async function loadDialogTemplate() {
   return html;
 }
 
-async function openDialog(config = {}) {
+export async function openDialog(config = {}) {
   const {
     title = "Aviso",
     message = "",

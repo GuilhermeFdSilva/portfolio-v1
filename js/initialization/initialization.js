@@ -90,7 +90,7 @@ function changeVisibility() {
 }
 
 /** Iteration to generate the typing effect in the terminal */
-async function typeBoot(){
+export async function startBoot(){
     for (const text of bootLines){
         const line = document.createElement("p");
         line.classList.add("no-select");
@@ -134,6 +134,3 @@ document.addEventListener("click", (e) => {
         startSystem();
     }
 });
-
-/** Initial calls */
-typeBoot();

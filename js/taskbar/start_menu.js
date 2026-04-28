@@ -6,7 +6,7 @@ let startMenuVisible = false;
 /**
  * Change start menu visibility
  */
-function setStartMenuVisibility() {
+export function setStartMenuVisibility() {
     if (startMenuVisible) {
         startMenu.style.display = "flex";
     } else {
@@ -41,5 +41,3 @@ document.addEventListener("click", (event) => {
         }
     }
 });
-
-setStartMenuVisibility();

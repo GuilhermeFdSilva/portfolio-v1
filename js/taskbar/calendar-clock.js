@@ -1,3 +1,5 @@
+export { updateTime };
+
 /** HTML Elements */
 const clock = document.getElementById("taskbar-clock");
 
@@ -21,6 +23,3 @@ function updateTime() {
 
     setTimeout(updateTime, 1000);
 }
-
-/** Initial calls */
-updateTime();
