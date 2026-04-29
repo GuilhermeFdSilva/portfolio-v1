@@ -1,4 +1,12 @@
 @import 'root.css';
+@import 'crt_filter.css';
+@import 'interface.css';
+@import '/css/initialization/initialization.css';
+@import '/css/taskbar/taskbar.css';
+@import '/css/taskbar/start_menu.css';
+@import '/css/taskbar/calendar.css';
+@import '/css/desktop/desktop.css';
+@import '/components/dialog/dialog.css';
 
 * {
   margin: 0;
