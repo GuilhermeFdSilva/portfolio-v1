@@ -1,0 +1,32 @@
+@import 'css/main/root.css';
+@import 'css/main/crt_filter.css';
+@import 'css/main/interface.css';
+@import 'css/initialization/initialization.css';
+@import 'css/taskbar/taskbar.css';
+@import 'css/taskbar/start_menu.css';
+@import 'css/taskbar/calendar.css';
+@import 'css/desktop/desktop.css';
+@import 'components/dialog/dialog.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  font-size:  var(--font-size);
+}
+
+@media (max-width: 510px) {
+    * {
+      font-size: var(--font-size-small);
+    }
+}
+
+::selection {
+  background-color: var(--primary);
+  color: var(--text);
+}
+
+.no-select {
+  user-select: none;
+}
