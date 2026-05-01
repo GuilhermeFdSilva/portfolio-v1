@@ -12,13 +12,6 @@
     <!-- Screem filter -->
     <div id="crt-overlay"></div>
 
-    <!-- Initialization - Section to contain the buffer screen -->
-    <section id="terminal">
-        <article id="boot" class="loading-started">
-            <p id="skip" class="no-select"> Press ESC or tap HERE to skip boot </p>
-        </article>
-    </section>
-
     <!-- Taskbar - This section is for navigation and to contain the items accessed by the user. -->
     <nav id="taskbar" class="interface-window no-select">
 
@@ -134,7 +127,7 @@
                             ▶
                         </p>
                         <section class="start-menu-shutdown-options interface-window">
-                            <article class="start-menu-option">
+                            <article class="start-menu-option" id="restart-button">
                                 <img src="assets/restart.png" alt="Restart" class="start-menu-option-img">
                                 <p class="start-menu-option-txt">
                                     Reiniciar
@@ -167,7 +160,7 @@
     </nav>
 
     <!-- Desktop -->
-    <main id="main">
+    <main id="desktop">
 
     </main>
 

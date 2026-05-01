@@ -1,7 +1,14 @@
-/** HTML Elements */
-const bootDisplay = document.getElementById("boot");
-const terminal = document.getElementById("terminal");
-const skip = document.getElementById("skip");
+let bootTermianlTemplateCache = null;
+
+async function loadBootTerminalTemplate() {
+    if (bootTermianlTemplateCache) return bootTermianlTemplateCache;
+
+    const res = await fetch("./components/sysBoot/bootTerminal.html");
+    const html = await res.text();
+
+    bootTermianlTemplateCache = html;
+    return html;
+}
 
 /** Texts for the boot  */
 const bootLines = [
@@ -51,15 +58,15 @@ const bootLines = [
 ];
 
 /** Function to close the system boot */
-function startSystem () {
+function startSystem (terminal) {
     terminal.classList.add("exit");
 
     setTimeout(() => {
-        terminal.style.display = "none"
+        terminal.remove();
     }, 500);
 
-    document.removeEventListener("keydown", startSystem);
-    document.removeEventListener("click", startSystem);
+    terminal.removeEventListener("keydown", startSystem);
+    terminal.removeEventListener("click", startSystem);
 }
 
 /** This function generates a promise to wait for the next line or letter. It receives the waiting time */
@@ -76,21 +83,23 @@ function lineRandomDelay(textLength) {
 }
 
 /** Add the listeners to finalize the boot */
-function addExitListeners() {
-    document.addEventListener("keydown", startSystem);
-    document.addEventListener("touchend", startSystem);
+function addExitListeners(terminal) {
+    const handler = () => startSystem(terminal);
+
+    document.addEventListener("keydown", handler, { once: true });
+    document.addEventListener("touchend", handler, { once: true });
 }
 
 /** Changes the visibility of the skip and cursor */
-function changeVisibility() {
-    skip.style.display = "none";
+function changeVisibility(bootDisplay , skip ) {
+    skip.remove();
 
     bootDisplay.classList.remove("loading-started");
     bootDisplay.classList.add("loading-complete");
 }
 
 /** Iteration to generate the typing effect in the terminal */
-export async function startBoot(){
+async function bootTerminalMain(terminal, bootDisplay, skip){
     for (const text of bootLines){
         const line = document.createElement("p");
         line.classList.add("no-select");
@@ -104,8 +113,8 @@ export async function startBoot(){
             line.classList.add("blink");
             line.innerHTML = "< PRESS ANY KEY TO START >";
 
-            changeVisibility();
-            addExitListeners();
+            changeVisibility(bootDisplay, skip);
+            addExitListeners(terminal);
 
             continue;
         }
@@ -121,16 +130,33 @@ export async function startBoot(){
     }
 }
 
-/** Listener to skip on ESC  */
-document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-        startSystem();
-    }
-});
+function addBootListeners (terminal) {
+    /** Listener to skip on ESC  */
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            startSystem(terminal);
+        }
+    });
+    
+    /** Skip on click or touch */
+    terminal.addEventListener("click", (e) => {
+        if (e.target === skip) {
+            startSystem(terminal);
+        }
+    });
+}
 
-/** Skip on click or touch */
-document.addEventListener("click", (e) => {
-    if (e.target === skip) {
-        startSystem();
-    }
-});
+export async function startBoot() {
+    const html = await loadBootTerminalTemplate();
+
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = html;
+
+    const terminal = wrapper.firstElementChild;
+    const bootDisplay = terminal.querySelector("#boot");
+    const skip = terminal.querySelector("#skip");
+
+    document.body.appendChild(terminal);
+    addBootListeners(terminal);
+    bootTerminalMain(terminal, bootDisplay, skip);
+}
