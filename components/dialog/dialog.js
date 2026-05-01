@@ -1,5 +1,5 @@
 let dialogTemplateCache = null;
-let desktop = document.getElementById("main");
+let desktop = document.getElementById("desktop");
 
 async function loadDialogTemplate() {
   if (dialogTemplateCache) return dialogTemplateCache;
