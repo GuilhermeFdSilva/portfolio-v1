@@ -1,8 +1,8 @@
-import { startBoot } from "./components/sysBoot/bootTerminal.js";
-import { setStartMenuVisibility } from "./js/taskbar/start_menu.js";
-import { updateTime } from "./js/taskbar/calendar-clock.js";
-import { updateMonthYear, setCalendarVisibility, plusMonth, minusMonth } from "./js/taskbar/calendar.js";
-import { openDialog } from "./components/dialog/dialog.js";
+import { startBoot } from "../components/sysBoot/bootTerminal.js";
+import { setStartMenuVisibility } from "../components/taskbar/startMenu/startMenu.js";
+import { updateTime } from "../components/taskbar/taskbar.js";
+import { updateMonthYear, setCalendarVisibility, plusMonth, minusMonth } from "../components/taskbar/calendar/calendar.js";
+import { openDialog } from "../components/dialog/dialog.js";    
 
 const restartButton = document.getElementById("restart-button");
 
