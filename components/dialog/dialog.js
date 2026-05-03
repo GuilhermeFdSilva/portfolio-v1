@@ -1,35 +1,41 @@
-let dialogTemplateCache = null;
-let desktop = document.getElementById("desktop");
+export class Dialog {
+  static dialogTemplateCache = null;
 
-async function loadDialogTemplate() {
-  if (dialogTemplateCache) return dialogTemplateCache;
+  constructor(desktop) {
+    if (!desktop) throw new Error("Desktop element is required to initialize Dialog.");
+    this.desktop = desktop;
+  }
 
-  const res = await fetch("./components/dialog/dialog.html");
-  const html = await res.text();
+  static async loadDialogTemplate() {
+    if (Dialog.dialogTemplateCache) return Dialog.dialogTemplateCache;
 
-  dialogTemplateCache = html;
-  return html;
-}
+    const res = await fetch("./components/dialog/dialog.html");
+    const html = await res.text();
 
-export async function openDialog(config = {}) {
-  const {
-    title = "Aviso",
-    message = "",
-  } = config;
+    Dialog.dialogTemplateCache = html;
+    return html;
+  }
 
-  const html = await loadDialogTemplate();
+  async openDialog(config = {}) {
+    const {
+      title = "Aviso",
+      message = "",
+    } = config;
 
-  const wrapper = document.createElement("div");
-  wrapper.innerHTML = html;
+    const html = await Dialog.loadDialogTemplate();
 
-  const dialog = wrapper.firstElementChild;
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = html;
 
-  dialog.querySelector(".dialog-title").textContent = title;
-  dialog.querySelector(".dialog-message").textContent = message;
+    const dialog = wrapper.firstElementChild;
 
-  const close = () => dialog.remove();
-  dialog.querySelector(".dialog-close").onclick = close;
-  dialog.querySelector(".dialog-confirm").onclick = close;
+    dialog.querySelector(".dialog-title").textContent = title;
+    dialog.querySelector(".dialog-message").textContent = message;
 
-  desktop.appendChild(dialog);
+    const close = () => dialog.remove();
+    dialog.querySelector(".dialog-close").onclick = close;
+    dialog.querySelector(".dialog-confirm").onclick = close;
+
+    desktop.appendChild(dialog);
+  }
 }

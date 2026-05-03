@@ -1,11 +1,9 @@
 import { startBoot } from "../components/sysBoot/bootTerminal.js";
 import { loadTaskbar, updateTime } from "../components/taskbar/taskbar.js";
-import { openDialog } from "../components/dialog/dialog.js";    
 
-const restartButton = document.getElementById("restart-button");
+import { Dialog } from "../components/dialog/dialog.js";
 
-const calendarUp = document.getElementById("calendar-button-up");
-const calendarDown = document.getElementById("calendar-button-down");
+const dialog = new Dialog(document.getElementById("desktop"));
 
 let clock = null;
 
@@ -16,4 +14,4 @@ clock = document.getElementById("taskbar-clock");
 
 updateTime(clock);
 
-openDialog({title: 'WIP', message: 'Área ainda não implementada!'});
+await dialog.openDialog({title: 'WIP', message: 'Área ainda não implementada!'});
