@@ -1,3 +1,24 @@
+let calendarTemplateCache = null;
+
+async function loadCalendarTemplate() {
+    if (calendarTemplateCache) return calendarTemplateCache;
+
+    const res = await fetch("/components/taskbar/calendar/calendar.html");
+    const html = await res.text();
+
+    calendarTemplateCache = html;
+    return html;
+}
+
+export async function loadCalendar() {
+    const wrapper = document.createElement("div");
+    
+    wrapper.innerHTML = await loadCalendarTemplate();
+    const calendar = wrapper.firstElementChild;
+
+    return calendar;
+}
+
 /** HTML Elements */
 const calendarContainer = document.getElementById("taskbar-calendar-container");
 const containerDates = document.getElementById("container-dates");
@@ -162,21 +183,21 @@ function switchCalendarVisibility() {
     resetDay();
 }
 
-/**
- * Listener for the calendar access calendarButton
- */
-calendarButton.addEventListener("click", (event) => {
-        event.stopPropagation();
-        switchCalendarVisibility();
-});
-
-/**
- * Listener to close the calendar if the user clicks elsewhere on the screen
- */
-document.addEventListener("click", (event) => {
-    if (!calendarContainer.contains(event.target)) {
-        if (calendarVisible) {
-            switchCalendarVisibility();
-        }
-    }
-});
+    // /**
+    //  * Listener for the calendar access calendarButton
+    //  */
+    // calendarButton.addEventListener("click", (event) => {
+    //         event.stopPropagation();
+    //         switchCalendarVisibility();
+    // });
+    
+    // /**
+    //  * Listener to close the calendar if the user clicks elsewhere on the screen
+    //  */
+    // document.addEventListener("click", (event) => {
+    //     if (!calendarContainer.contains(event.target)) {
+    //         if (calendarVisible) {
+    //             switchCalendarVisibility();
+    //         }
+    //     }
+    // });

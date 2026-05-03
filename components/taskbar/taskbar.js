@@ -1,7 +1,29 @@
-export { updateTime };
+import { loadStartMenu, setStartMenuVisibility } from "./startMenu/startMenu.js";
+import { loadCalendar } from "./calendar/calendar.js";
 
-/** HTML Elements */
-const clock = document.getElementById("taskbar-clock");
+let taskbarTemplateCache = null;
+
+async function loadTaskbarTemplate() {
+    if (taskbarTemplateCache) return taskbarTemplateCache;
+
+    const res = await fetch("/components/taskbar/taskbar.html");
+    const html = await res.text();
+
+    taskbarTemplateCache = html;
+    return html;
+}
+
+export async function loadTaskbar() {
+    const wrapper = document.createElement("div");
+
+    wrapper.innerHTML = await loadTaskbarTemplate();
+    const taskbar = wrapper.firstElementChild;
+
+    taskbar.appendChild(await loadStartMenu());
+    taskbar.appendChild(await loadCalendar());
+
+    document.getElementById("taskbar").appendChild(taskbar);
+}
 
 /** Adjust the time to the desired format */
 function timeFormat(date) {
@@ -15,11 +37,13 @@ function timeFormat(date) {
 }
 
 /** Updates the time regularly */
-function updateTime() {
+export async function updateTime(clock) {
     const dateTime = new Date();
     const formattedTime = timeFormat(dateTime);
 
     clock.innerText = formattedTime;
 
-    setTimeout(updateTime, 1000);
+    let hadler = () => updateTime(clock);
+
+    setTimeout(hadler, 1000);
 }

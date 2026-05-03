@@ -1,7 +1,5 @@
 import { startBoot } from "../components/sysBoot/bootTerminal.js";
-import { setStartMenuVisibility } from "../components/taskbar/startMenu/startMenu.js";
-import { updateTime } from "../components/taskbar/taskbar.js";
-import { updateMonthYear, setCalendarVisibility, plusMonth, minusMonth } from "../components/taskbar/calendar/calendar.js";
+import { loadTaskbar, updateTime } from "../components/taskbar/taskbar.js";
 import { openDialog } from "../components/dialog/dialog.js";    
 
 const restartButton = document.getElementById("restart-button");
@@ -9,18 +7,13 @@ const restartButton = document.getElementById("restart-button");
 const calendarUp = document.getElementById("calendar-button-up");
 const calendarDown = document.getElementById("calendar-button-down");
 
+let clock = null;
+
 startBoot();
 
-restartButton.addEventListener("click", startBoot);
+await loadTaskbar();
+clock = document.getElementById("taskbar-clock");
 
-setStartMenuVisibility();
-
-updateTime();
-
-updateMonthYear();
-setCalendarVisibility();
-calendarUp.addEventListener("click", minusMonth);
-calendarDown.addEventListener("click", plusMonth);
-
+updateTime(clock);
 
 openDialog({title: 'WIP', message: 'Área ainda não implementada!'});
