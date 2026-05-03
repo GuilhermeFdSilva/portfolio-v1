@@ -1,4 +1,5 @@
-import { startBoot } from "../components/sysBoot/bootTerminal.js";
+import { SysBoot } from "../components/sysBoot/bootTerminal.js";
+
 import { loadTaskbar, updateTime } from "../components/taskbar/taskbar.js";
 
 import { Dialog } from "../components/dialog/dialog.js";
@@ -7,7 +8,9 @@ const dialog = new Dialog(document.getElementById("desktop"));
 
 let clock = null;
 
-startBoot();
+const sysBoot = new SysBoot(document.getElementById("boot-container"));
+
+sysBoot.startBoot();
 
 await loadTaskbar();
 clock = document.getElementById("taskbar-clock");
