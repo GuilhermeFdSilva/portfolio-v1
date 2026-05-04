@@ -1,5 +1,5 @@
 import { loadStartMenu, setStartMenuVisibility } from "./startMenu/startMenu.js";
-import { loadCalendar } from "./calendar/calendar.js";
+import { Calendar } from "./calendar/calendar.js";
 
 let taskbarTemplateCache = null;
 
@@ -20,7 +20,11 @@ export async function loadTaskbar() {
     const taskbar = wrapper.firstElementChild;
 
     taskbar.appendChild(await loadStartMenu());
-    taskbar.appendChild(await loadCalendar());
+    const startButton = taskbar.querySelector("#taskbar-start-button");
+    const calendarButton = taskbar.querySelector("#taskbar-calendar-button");
+
+
+    taskbar.appendChild(await (new Calendar(calendarButton)).loadCalendar());
 
     document.getElementById("taskbar").appendChild(taskbar);
 }
