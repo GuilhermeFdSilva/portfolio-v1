@@ -1,53 +1,66 @@
-import { loadStartMenu, setStartMenuVisibility } from "./startMenu/startMenu.js";
+import { StartMenu } from "./startMenu/startMenu.js";
 import { Calendar } from "./calendar/calendar.js";
 
-let taskbarTemplateCache = null;
+export class Taskbar {
+    static taskbar = null;
 
-async function loadTaskbarTemplate() {
-    if (taskbarTemplateCache) return taskbarTemplateCache;
+    static getTaskbar() {
+        if (Taskbar.taskbar) {
+            return Taskbar.taskbar;
+        }
 
-    const res = await fetch("/components/taskbar/taskbar.html");
-    const html = await res.text();
+        Taskbar.taskbar = this.#loadTaskbar();
 
-    taskbarTemplateCache = html;
-    return html;
-}
+        return Taskbar.taskbar;
+    }
 
-export async function loadTaskbar() {
-    const wrapper = document.createElement("div");
+    static async #loadTaskbarTemplate() {
+        const res = await fetch("/components/taskbar/taskbar.html");
+        const html = await res.text();
 
-    wrapper.innerHTML = await loadTaskbarTemplate();
-    const taskbar = wrapper.firstElementChild;
+        return html;
+    }
 
-    taskbar.appendChild(await loadStartMenu());
-    const startButton = taskbar.querySelector("#taskbar-start-button");
-    const calendarButton = taskbar.querySelector("#taskbar-calendar-button");
+    static async #loadTaskbar() {
+        const wrapper = document.createElement("div");
 
+        wrapper.innerHTML = await this.#loadTaskbarTemplate();
+        const taskbar = wrapper.firstElementChild;
 
-    taskbar.appendChild(await (new Calendar(calendarButton)).loadCalendar());
+        const clock = taskbar.querySelector("#taskbar-clock");
 
-    document.getElementById("taskbar").appendChild(taskbar);
-}
+        this.#updateTime(clock);
 
-/** Adjust the time to the desired format */
-function timeFormat(date) {
-    let hours = date?.getHours();
-    let minutes = date?.getMinutes();
+        const startButton = taskbar.querySelector("#taskbar-start-button");
+        const calendarButton = taskbar.querySelector("#taskbar-calendar-button");
 
-    hours = hours.toString().padStart(2, "0");
-    minutes = minutes.toString().padStart(2, "0");
+        taskbar.appendChild(await (StartMenu.configInstance(startButton)));
 
-    return hours + ":" + minutes
-}
+        taskbar.appendChild(await (Calendar.configureInstance(calendarButton)));
 
-/** Updates the time regularly */
-export async function updateTime(clock) {
-    const dateTime = new Date();
-    const formattedTime = timeFormat(dateTime);
+        return taskbar;
+    }
 
-    clock.innerText = formattedTime;
+    /** Adjust the time to the desired format */
+    static #timeFormat(date) {
+        let hours = date?.getHours();
+        let minutes = date?.getMinutes();
 
-    let hadler = () => updateTime(clock);
+        hours = hours.toString().padStart(2, "0");
+        minutes = minutes.toString().padStart(2, "0");
 
-    setTimeout(hadler, 1000);
+        return hours + ":" + minutes
+    }
+
+    /** Updates the time regularly */
+    static async #updateTime(clock) {
+        const dateTime = new Date();
+        const formattedTime = this.#timeFormat(dateTime);
+
+        clock.innerText = formattedTime;
+
+        let hadler = () => this.#updateTime(clock);
+
+        setTimeout(hadler, 1000);
+    }
 }
