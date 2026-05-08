@@ -1,7 +1,6 @@
 export class Calendar {
     static calendar = null;
     static calendarButton = null;
-    static calendarTemplateCache = null;
     static calendarVisible = false;
 
     static daysWeek = ["D", "S", "T", "Q", "Q", "S", "S"];
@@ -75,12 +74,9 @@ export class Calendar {
     }
 
     static async #loadCalendarTemplate() {
-        if (Calendar.calendarTemplateCache) return Calendar.calendarTemplateCache;
-
         const res = await fetch("/components/taskbar/calendar/calendar.html");
         const html = await res.text();
 
-        Calendar.calendarTemplateCache = html;
         return html;
     }
 
