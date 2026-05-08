@@ -1,52 +1,80 @@
 export class Calendar {
+    static calendar = null;
+    static calendarButton = null;
     static calendarTemplateCache = null;
+    static calendarVisible = false;
 
-    constructor(calendarButton) {
-        /** Regular Strings */
-        this.daysWeek = ["D", "S", "T", "Q", "Q", "S", "S"];
-        this.months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    static daysWeek = ["D", "S", "T", "Q", "Q", "S", "S"];
+    static months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-        /** Current date */
-        this.now = new Date();
-        this.today = this.now.getDate();
-        this.currentMonth = this.now.getMonth();
-        this.currentYear = this.now.getFullYear();
+    static now = new Date();
+    static today = Calendar.now.getDate();
+    static currentMonth = Calendar.now.getMonth();
+    static currentYear = Calendar.now.getFullYear();
 
-        /** Display month, initially instantiated as the current month */
-        this.displayMonth = this.currentMonth;
-        this.displayYear = this.currentYear;
+    static displayMonth = Calendar.currentMonth;
+    static displayYear = Calendar.currentYear;
 
-        /** Information for display current month */
-        this.daysInMonth = new Date(this.displayYear, this.displayMonth + 1, 0).getDate();
-        this.firstDay = new Date(this.displayYear, this.displayMonth, 1).getDay();
-        this.previousMonthDays = new Date(this.displayYear, this.displayMonth, 0).getDate();
+    static daysInMonth = new Date(Calendar.displayYear, Calendar.displayMonth + 1, 0).getDate();
+    static firstDay = new Date(Calendar.displayYear, Calendar.displayMonth, 1).getDay();
+    static previousMonthDays = new Date(Calendar.displayYear, Calendar.displayMonth, 0).getDate();
 
-        /** Define the calendar visibility */
-        this.calendarVisible = false;
+    static calendarContainer = null;
+    static monthsYearField = null;
+    static containerDates = null;
+    static calendarButtonUp = null;
+    static calendarButtonDown = null;
 
-        // HTML elements
-        this.calendarContainer = null;
-        this.monthsYearField = null;
-        this.containerDates = null;
-        this.calendarButtonUp = null;
-        this.calendarButtonDown = null;
-        
-        this.calendarButton = calendarButton;
-        this.calendarButton.addEventListener("click", (event) => {
+    static async configureInstance(calendarButton) {
+        if (Calendar.calendar) {
+            return Calendar.calendar;
+        }
+
+        Calendar.calendar = await this.#loadCalendar();
+
+        Calendar.calendarButton = calendarButton;
+
+        Calendar.calendarButton.addEventListener("click", (event) => {
             event.stopPropagation();
-            this.switchCalendarVisibility();
+            this.#switchCalendarVisibility();
         });
 
         document.addEventListener("click", (event) => {
-            if (!this.calendarContainer.contains(event.target)) {
-                if (this.calendarVisible) {
-                    this.switchCalendarVisibility();
-                }
+            if (Calendar.calendarVisible && !Calendar.calendar.contains(event.target) && event.target !== Calendar.calendarButton) {
+                event.stopPropagation();
+                this.#switchCalendarVisibility();
             }
         });
+
+        document.addEventListener("keydown", (event) => {
+            if (Calendar.calendarVisible && event.key == "Escape") {
+                event.stopPropagation();
+                this.#switchCalendarVisibility();
+            }
+        });
+
+        this.calendarButtonUp.addEventListener("click", (event) => {
+            event.stopPropagation();
+            this.#minusMonth();
+        });
+
+        this.calendarButtonDown.addEventListener("click", (event) => {
+            event.stopPropagation();
+            this.#plusMonth();
+        });
+
+        return Calendar.calendar;
     }
 
-    static async loadCalendarTemplate() {
+    static getInstance() {
+        if (!Calendar.calendarButton) {
+            throw new Error("Calendar instance not created yet");
+        }
+
+        return Calendar.calendarButton;
+    }
+
+    static async #loadCalendarTemplate() {
         if (Calendar.calendarTemplateCache) return Calendar.calendarTemplateCache;
 
         const res = await fetch("/components/taskbar/calendar/calendar.html");
@@ -56,26 +84,16 @@ export class Calendar {
         return html;
     }
 
-    async loadCalendar() {
+    static async #loadCalendar() {
         const wrapper = document.createElement("div");
 
-        wrapper.innerHTML = await Calendar.loadCalendarTemplate();
-        
+        wrapper.innerHTML = await Calendar.#loadCalendarTemplate();
+
         this.calendarContainer = wrapper.firstElementChild;
         this.monthsYearField = this.calendarContainer.querySelector("#month-year");
         this.containerDates = this.calendarContainer.querySelector("#container-dates");
         this.calendarButtonUp = this.calendarContainer.querySelector("#calendar-button-up");
         this.calendarButtonDown = this.calendarContainer.querySelector("#calendar-button-down");
-
-        this.calendarButtonUp.addEventListener("click", (event) => {
-            event.stopPropagation();
-            this.minusMonth;
-        });
-
-        this.calendarButtonDown.addEventListener("click", (event) => {
-            event.stopPropagation();
-            this.plusMonth();
-        });
 
         return this.calendarContainer;
     }
@@ -83,7 +101,7 @@ export class Calendar {
     /**
      * Insert the initials of the days of the week into the calendar
      */
-    setDaysOfWeek() {
+    static #setDaysOfWeek() {
         this.daysWeek.forEach((element, index) => {
             let dayOfWeek = document.createElement('p');
             dayOfWeek.classList.add("day-field");
@@ -102,12 +120,12 @@ export class Calendar {
     /**
      * Fill in the fields for the days of the month, according to the parameters
      */
-    updateDays() {
+    static #updateDays() {
         this.monthsYearField.innerText = this.months[this.displayMonth] + " - " + this.displayYear;
 
         this.containerDates.innerHTML = "";
 
-        this.setDaysOfWeek();
+        this.#setDaysOfWeek();
 
         let textDay = this.firstDay == 0 ? 1 : this.previousMonthDays - (this.firstDay - 1);
         let previousDays = textDay > 1;
@@ -149,18 +167,18 @@ export class Calendar {
     /**
      * Updates the month's information for display
      */
-    updateMonthYear() {
+    static #updateMonthYear() {
         this.daysInMonth = new Date(this.displayYear, this.displayMonth + 1, 0).getDate();
         this.firstDay = new Date(this.displayYear, this.displayMonth, 1).getDay();
         this.previousMonthDays = new Date(this.displayYear, this.displayMonth, 0).getDate();
 
-        this.updateDays();
+        this.#updateDays();
     }
 
     /**
      * Increase the display month
      */
-    plusMonth() {
+    static #plusMonth() {
         this.displayMonth++;
 
         if (this.displayMonth > 11) {
@@ -168,13 +186,13 @@ export class Calendar {
             this.displayYear++;
         }
 
-        this.updateMonthYear();
+        this.#updateMonthYear();
     }
 
     /**
      * Decreases the display month
      */
-    minusMonth() {
+    static #minusMonth() {
         this.displayMonth--;
 
         if (this.displayMonth < 0) {
@@ -182,15 +200,18 @@ export class Calendar {
             this.displayYear--;
         }
 
-        this.updateMonthYear();
+        this.#updateMonthYear();
     }
 
     /**
      * Change calendar visibility
      */
-    setCalendarVisibility() {
+    static #switchCalendarVisibility() {
+        this.calendarVisible = !this.calendarVisible;
+
         if (this.calendarVisible) {
             this.calendarContainer.style.display = "flex";
+            this.#resetDay();
         } else {
             this.calendarContainer.style.display = "none";
         }
@@ -199,20 +220,10 @@ export class Calendar {
     /**
      * Resets the display date to the current month
      */
-    resetDay() {
+    static #resetDay() {
         this.displayMonth = this.now.getMonth();
         this.displayYear = this.now.getFullYear();
 
-        this.updateMonthYear();
-    }
-
-    /**
-     * Updates calendar visibility
-     */
-    switchCalendarVisibility() {
-        this.calendarVisible = !this.calendarVisible;
-
-        this.setCalendarVisibility();
-        this.resetDay();
+        this.#updateMonthYear();
     }
 }
