@@ -1,61 +1,79 @@
-let startMenuTemplateCache = null;
+export class StartMenu {
+    static startMenu = null;
+    static startMenuButton = null;
+    static startMenuTemplateCache = null;
+    static startMenuVisible = false;
 
-let startMenuVisible = false;
+    static configInstance(button) {
+        if (StartMenu.startMenu) {
+            return StartMenu.startMenu;
+        }
 
-async function loadStartMenuTemplate() {
-    if (startMenuTemplateCache) return startMenuTemplateCache;
-    
-    const res = await fetch("./components/taskbar/startMenu/startMenu.html");
-    const html = await res.text();
+        StartMenu.startMenu = this.#loadStartMenu();
 
-    startMenuTemplateCache = html;
-    return html;
-}
+        StartMenu.startMenuButton = button;
 
-export async function loadStartMenu() {
-    const wrapper = document.createElement("div");
+        StartMenu.startMenuButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            this.#switchStartMenuVisibility();
+        });
 
-    wrapper.innerHTML = await loadStartMenuTemplate();
-    const startMenu = wrapper.firstElementChild;
+        document.addEventListener("click", (event) => {
+            if (StartMenu.startMenuVisible && !StartMenu.startMenu.contains(event.target) && event.target !== StartMenu.startMenuButton) {
+                event.stopPropagation();
+                this.#switchStartMenuVisibility();
+            }
+        });
 
-    return startMenu;
-}
+        document.addEventListener("keydown", (event) => {
+            if (StartMenu.startMenuVisible && event.key == "Escape") {
+                event.stopPropagation();
+                this.#switchStartMenuVisibility();
+            }
+        });
 
-/**
- * Change start menu visibility
- */
-export function setStartMenuVisibility() {
-    if (startMenuVisible) {
-        startMenu.style.display = "flex";
-    } else {
-        startMenu.style.display = "none";
+        return StartMenu.startMenu;
+    }
+
+    static getInstance() {
+        if (!StartMenu.startMenuButton) {
+            throw new Error("StartMenu instance not created yet");
+        }
+
+        return StartMenu.startMenuButton;
+    }
+
+    static async #loadStartMenuTemplate() {
+        if (StartMenu.startMenuTemplateCache) return StartMenu.startMenuTemplateCache;
+
+        const res = await fetch("./components/taskbar/startMenu/startMenu.html");
+        const html = await res.text();
+
+        StartMenu.startMenuTemplateCache = html;
+        return html;
+    }
+
+    static async #loadStartMenu() {
+        const wrapper = document.createElement("div");
+
+        wrapper.innerHTML = await this.#loadStartMenuTemplate();
+        const startMenu = wrapper.firstElementChild;
+
+        StartMenu.startMenu = startMenu;
+
+        return startMenu;
+    }
+
+    /**
+     * Change start menu visibility
+     */
+    static #switchStartMenuVisibility() {
+        StartMenu.startMenuVisible = !StartMenu.startMenuVisible;
+
+        if (StartMenu.startMenuVisible) {
+            StartMenu.startMenu.style.display = "flex";
+        } else {
+            StartMenu.startMenu.style.display = "none";
+        }
     }
 }
-
-/**
- * Updates start menu visibility
- */
-function switchStartMenuVisibility() {
-    startMenuVisible = !startMenuVisible;
-
-    setStartMenuVisibility();
-}
-    
-    // /**
-    //  * Listener for the start menu access startMenuButton
-    //  */
-    // startMenuButton.addEventListener("click", (event) => {
-    //     event.stopPropagation();
-    //     switchStartMenuVisibility();
-    // });
-    
-    // /**
-    //  * Listener to close the start menu if the user clicks elsewhere on the screen
-    //  */
-    // document.addEventListener("click", (event) => {
-    //     if (!startMenu.contains(event.target)) {
-    //         if (startMenuVisible) {
-    //             switchStartMenuVisibility();
-    //         }
-    //     }
-    // });
