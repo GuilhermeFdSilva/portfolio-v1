@@ -1,7 +1,6 @@
 export class StartMenu {
     static startMenu = null;
     static startMenuButton = null;
-    static startMenuTemplateCache = null;
     static startMenuVisible = false;
 
     static configInstance(button) {
@@ -44,12 +43,9 @@ export class StartMenu {
     }
 
     static async #loadStartMenuTemplate() {
-        if (StartMenu.startMenuTemplateCache) return StartMenu.startMenuTemplateCache;
-
         const res = await fetch("./components/taskbar/startMenu/startMenu.html");
         const html = await res.text();
 
-        StartMenu.startMenuTemplateCache = html;
         return html;
     }
 
