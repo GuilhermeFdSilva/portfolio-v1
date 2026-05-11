@@ -1,4 +1,4 @@
-@import "../../css/main/root.css";
+@import "../main/root.css";
 
 #terminal {
     background-color: var(--terminal-bg);

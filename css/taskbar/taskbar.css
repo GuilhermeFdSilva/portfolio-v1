@@ -1,4 +1,4 @@
-@import "../../css/main/root.css";
+@import "../main/root.css";
 
 #taskbar {
     position: fixed;
@@ -39,17 +39,4 @@
     align-items: center;
     justify-content: center;
     gap: var(--interface-content-gap);
-}
-
-#taskbar-calendar-button {
-    height: var(--interface-button-size);
-    padding: 2px;
-}
-
-#taskbar-calendar-button img {
-    height: 100%;
-}
-
-#taskbar-clock {
-    cursor: default;
 }

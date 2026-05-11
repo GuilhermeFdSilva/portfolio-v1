@@ -1,41 +1,35 @@
-export class Dialog {
-  static dialogTemplateCache = null;
+let dialogTemplateCache = null;
+let desktop = document.getElementById("main");
 
-  constructor(desktop) {
-    if (!desktop) throw new Error("Desktop element is required to initialize Dialog.");
-    this.desktop = desktop;
-  }
+async function loadDialogTemplate() {
+  if (dialogTemplateCache) return dialogTemplateCache;
 
-  static async loadDialogTemplate() {
-    if (Dialog.dialogTemplateCache) return Dialog.dialogTemplateCache;
+  const res = await fetch("./components/dialog/dialog.html");
+  const html = await res.text();
 
-    const res = await fetch("./components/dialog/dialog.html");
-    const html = await res.text();
+  dialogTemplateCache = html;
+  return html;
+}
 
-    Dialog.dialogTemplateCache = html;
-    return html;
-  }
+async function openDialog(config = {}) {
+  const {
+    title = "Aviso",
+    message = "",
+  } = config;
 
-  async openDialog(config = {}) {
-    const {
-      title = "Aviso",
-      message = "",
-    } = config;
+  const html = await loadDialogTemplate();
 
-    const html = await Dialog.loadDialogTemplate();
+  const wrapper = document.createElement("div");
+  wrapper.innerHTML = html;
 
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = html;
+  const dialog = wrapper.firstElementChild;
 
-    const dialog = wrapper.firstElementChild;
+  dialog.querySelector(".dialog-title").textContent = title;
+  dialog.querySelector(".dialog-message").textContent = message;
 
-    dialog.querySelector(".dialog-title").textContent = title;
-    dialog.querySelector(".dialog-message").textContent = message;
+  const close = () => dialog.remove();
+  dialog.querySelector(".dialog-close").onclick = close;
+  dialog.querySelector(".dialog-confirm").onclick = close;
 
-    const close = () => dialog.remove();
-    dialog.querySelector(".dialog-close").onclick = close;
-    dialog.querySelector(".dialog-confirm").onclick = close;
-
-    desktop.appendChild(dialog);
-  }
+  desktop.appendChild(dialog);
 }

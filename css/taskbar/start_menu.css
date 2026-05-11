@@ -1,4 +1,4 @@
-@import "../../../css/main/root.css";
+@import '../main/root.css';
 
 #start-menu-container {
     width: var(--start-menu-width);
@@ -67,21 +67,15 @@
     color: var(--text);
 }
 
-.start-menu-option-label {
-    display: flex;
-    align-items: center;
-    gap: var(--interface-content-gap);
-}
-
-.start-menu-option-label-img {
+.start-menu-option-img {
     width: var(--start-menu-option-img-width);
 }
 
-.start-menu-option-label-txt {
+.start-menu-option-txt {
     padding-left: var(--start-menu-option-padding);
 }
 
-.start-menu-option-label-arrow {
+.start-menu-option-arrow {
     position: absolute;
     right: var(--start-menu-option-padding);
 }
