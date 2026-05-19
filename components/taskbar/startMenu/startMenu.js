@@ -5,7 +5,7 @@ export class StartMenu {
 
     static configInstance(button) {
         if (StartMenu.startMenu) {
-            return StartMenu.startMenu;
+            return StartMenu.startMenu; 
         }
 
         StartMenu.startMenu = this.#loadStartMenu();

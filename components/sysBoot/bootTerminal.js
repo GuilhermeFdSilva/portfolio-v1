@@ -5,7 +5,7 @@ export class SysBoot {
     /** Texts for the boot  */
     static bootLines = [
         "AuroraOS BIOS v1.0",
-        "Copyright (C) 2026 GuilhermeFdSilva",
+        "Copyright (C) 2026 GuilhermeFdSilva", 
         "",
         "Initializing firmware...",
         "Loading legacy compatibility layer [Win98-style UI]... OK",

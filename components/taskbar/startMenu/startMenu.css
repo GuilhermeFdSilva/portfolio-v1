@@ -3,7 +3,7 @@
 #start-menu-container {
     width: var(--start-menu-width);
     position: fixed;
-    z-index: 8500;
+    z-index: 8500; 
     bottom: var(--taskbar-height);
     left: 0;
     display: flex;

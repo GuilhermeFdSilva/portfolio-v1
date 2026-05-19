@@ -7,7 +7,7 @@ export class Calendar {
     static months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
     static now = new Date();
-    static today = Calendar.now.getDate();
+    static today = Calendar.now.getDate(); 
     static currentMonth = Calendar.now.getMonth();
     static currentYear = Calendar.now.getFullYear();
 

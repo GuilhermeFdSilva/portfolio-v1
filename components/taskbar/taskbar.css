@@ -1,7 +1,7 @@
 @import "../../css/main/root.css";
 
 #taskbar {
-    position: fixed;
+    position: fixed; 
     z-index: 8000;
     left: 0;
     right: 0;

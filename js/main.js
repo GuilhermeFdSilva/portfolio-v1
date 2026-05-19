@@ -13,4 +13,4 @@ sysBoot.startBoot();
 const taskbar = await Taskbar.getTaskbar();
 document.getElementById("taskbar").appendChild(taskbar);
 
-await dialog.openDialog({title: 'WIP', message: 'Área ainda não implementada!'});
+await dialog.openDialog({ title: 'WIP', message: 'Área ainda não implementada!' });

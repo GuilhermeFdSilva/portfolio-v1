@@ -2,7 +2,7 @@ import { StartMenu } from "./startMenu/startMenu.js";
 import { Calendar } from "./calendar/calendar.js";
 
 export class Taskbar {
-    static taskbar = null;
+    static taskbar = null; 
 
     static getTaskbar() {
         if (Taskbar.taskbar) {

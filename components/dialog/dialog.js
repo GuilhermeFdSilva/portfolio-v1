@@ -7,7 +7,7 @@ export class Dialog {
   }
 
   static async loadDialogTemplate() {
-    if (Dialog.dialogTemplateCache) return Dialog.dialogTemplateCache;
+    if (Dialog.dialogTemplateCache) return Dialog.dialogTemplateCache; 
 
     const res = await fetch("./components/dialog/dialog.html");
     const html = await res.text();
