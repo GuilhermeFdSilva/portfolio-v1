@@ -15,7 +15,7 @@ export class Taskbar {
     }
 
     static async #loadTaskbarTemplate() {
-        const res = await fetch("/components/taskbar/taskbar.html");
+        const res = await fetch("./components/taskbar/taskbar.html");
         const html = await res.text();
 
         return html;

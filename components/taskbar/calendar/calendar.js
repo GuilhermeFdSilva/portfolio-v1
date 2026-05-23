@@ -74,7 +74,7 @@ export class Calendar {
     }
 
     static async #loadCalendarTemplate() {
-        const res = await fetch("/components/taskbar/calendar/calendar.html");
+        const res = await fetch("./components/taskbar/calendar/calendar.html");
         const html = await res.text();
 
         return html;
