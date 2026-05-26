@@ -1,0 +1,51 @@
+@import '../../css/main/root.css';
+
+#session-background {
+    position: fixed;
+    inset: 0;
+    z-index: 9900;
+    background-color: var(--primary-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#container-interface-login {
+    width: 600px;
+}
+
+#titlebar-login {
+    justify-content: center;
+    color: var(--text);
+}
+
+#content-login {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--interface-content-padding);
+}
+
+.container-content-login {
+    flex-grow: 1;
+    max-width: 50%;
+    padding: var(--interface-content-padding);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#img-login {
+    width: 100px;
+    height: 100px;
+    background-color: var(--gray-dark);
+}
+
+#form-login {
+    display: flex;
+    flex-direction: column;
+    gap: var(--interface-content-gap);
+    width: 100%;
+}
