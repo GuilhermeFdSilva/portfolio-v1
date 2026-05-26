@@ -95,6 +95,22 @@
     border-bottom: var(--interface-divider-shadow) solid var(--gray-light);
 }
 
+.interface-input {
+    padding: var(--interface-content-padding);
+    border-left: var(--interface-divider-shadow) solid var(--gray-dark);
+    border-right: var(--interface-divider-shadow) solid var(--gray-light);
+    border-top: var(--interface-divider-shadow) solid var(--gray-dark);
+    border-bottom: var(--interface-divider-shadow) solid var(--gray-light);
+}
+
+.interface-input:focus {
+    outline: none;
+    border-left: var(--interface-divider-shadow) solid var(--info-dark);
+    border-right: var(--interface-divider-shadow) solid var(--info-light);
+    border-top: var(--interface-divider-shadow) solid var(--info-dark);
+    border-bottom: var(--interface-divider-shadow) solid var(--info-light);
+}
+
 .interface-footer-content {
     padding: var(--interface-content-padding);
     display: flex;
