@@ -7,7 +7,7 @@
     line-height: 1.6rem;
     position: fixed;
     inset: 0;
-    z-index: 9000;
+    z-index: 9950;
     padding: 15vh 15vw;
     transition: all ease-out 0.5s;
 }
