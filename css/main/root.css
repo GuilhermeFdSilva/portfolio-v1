@@ -91,9 +91,4 @@
         2 * var(--interface-content-gap) -
         var(--interface-title-height)
     );
-
-    --desktop-height: calc(
-        100vh -
-        var(--taskbar-height)
-    );
 }

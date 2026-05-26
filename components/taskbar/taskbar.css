@@ -3,9 +3,7 @@
 #taskbar {
     position: fixed;
     z-index: 8000;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: auto 0 0;
     height: var(--taskbar-height);
     padding: var(--interface-content-padding);
     background-color: var(--surface);

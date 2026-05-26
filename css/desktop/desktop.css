@@ -2,9 +2,9 @@
 
 main {
     position: relative;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100vw;
-    height: var(--desktop-height);
+    height: 100vh;
+    padding-bottom: var(--taskbar-height);
     background: var(--background);
 }
