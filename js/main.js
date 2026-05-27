@@ -13,11 +13,9 @@ const sysBoot = new SysBoot(document.getElementById("boot-container"));
 sysBoot.startBoot();
 
 const sessionScreem = await SessionScreem.getSessionScreem();
-await document.body.appendChild(sessionScreem);
+await document.getElementById("session-container").appendChild(sessionScreem);
 
 if (true) {
-    
-
     const taskbar = await Taskbar.getTaskbar();
     document.getElementById("taskbar").appendChild(taskbar);
 
