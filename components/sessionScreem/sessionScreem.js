@@ -1,13 +1,19 @@
 export class SessionScreem {
     static instance = null;
-    
-    static async getSessionScreem() {
+
+    constructor(container) {
+        this.container = container;
+        this.loadSessionScreemTemplate();
+    }
+
+    static async getSessionScreem(container) {
         if (this.instance) {
             return this.instance;
         }
 
         const sessionScreemHTML = await this.#loadSessionScreemTemplate();
         const wrapper = document.createElement("div");
+        
         wrapper.innerHTML = sessionScreemHTML;
 
         this.instance = wrapper.firstElementChild;
@@ -15,6 +21,8 @@ export class SessionScreem {
         this.instance.querySelector("#session-btn-login").addEventListener("click", () => {
             this.destroy();
         });
+
+        container.appendChild(this.instance);
 
         return this.instance;
     }

@@ -1,6 +1,7 @@
 export class SysBoot {
-    static bootTermianlTemplateCache = null;
-    static firstBoot = true;
+    static #context = null;
+    static #instance = null;
+    static #firstBoot = true;
     
     /** Texts for the boot  */
     static bootLines = [
@@ -38,12 +39,29 @@ export class SysBoot {
         { type: "end" } // Sentinel for the last line
     ];
 
-    constructor(bootContainer) {
-        if (!bootContainer) throw new Error("Boot container element is required to initialize SysBoot.");
-        this.bootContainer = bootContainer;
+    constructor() {
+        if (!SysBoot.#context) {
+            throw new Error("SysBoot is a singleton class. Use SysBoot.getSysBoot() to get the instance.");
+        }
     }
 
-    static async loadBootTerminalTemplate() {
+    static async getSysBoot(container) {
+        if (this.#instance) {
+            return this.#instance;
+        }
+
+        const sysBootHTML = await this.#loadBootTerminalTemplate();
+        const wrapper = document.createElement("div");
+
+        wrapper.innerHTML = sysBootHTML;
+
+        this.#instance = wrapper.firstElementChild;
+        container.appendChild(this.#instance);
+
+        return this.#instance;
+    }
+
+    static async #loadBootTerminalTemplate() {
         if (SysBoot.bootTermianlTemplateCache) return SysBoot.bootTermianlTemplateCache;
 
         const res = await fetch("./components/sysBoot/bootTerminal.html");
@@ -56,7 +74,7 @@ export class SysBoot {
 
     /** Function to close the system boot */
     closeBoot(terminal) {
-        if (SysBoot.firstBoot) SysBoot.firstBoot = false;
+        if (SysBoot.#firstBoot) SysBoot.#firstBoot = false;
 
         terminal.classList.add("exit");
 
@@ -150,7 +168,7 @@ export class SysBoot {
     }
 
     async startBoot() {
-        const html = await SysBoot.loadBootTerminalTemplate();
+        const html = await SysBoot.#loadBootTerminalTemplate();
 
         const wrapper = document.createElement("div");
         wrapper.innerHTML = html;
