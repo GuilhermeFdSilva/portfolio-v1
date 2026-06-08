@@ -1,14 +1,17 @@
 export class SessionScreem {
-    static instance = null;
+    static #instance = null;
+
+    static #context = null;
 
     constructor(container) {
-        this.container = container;
-        this.loadSessionScreemTemplate();
+        if (!SysBoot.#context) {
+            throw new Error("SessionScream is a singleton class. Use SessionScream.getSessionScream() to get the instance.");
+        }
     }
 
     static async getSessionScreem(container) {
-        if (this.instance) {
-            return this.instance;
+        if (this.#instance) {
+            return this.#instance;
         }
 
         const sessionScreemHTML = await this.#loadSessionScreemTemplate();
@@ -16,15 +19,15 @@ export class SessionScreem {
         
         wrapper.innerHTML = sessionScreemHTML;
 
-        this.instance = wrapper.firstElementChild;
+        this.#instance = wrapper.firstElementChild;
 
-        this.instance.querySelector("#session-btn-login").addEventListener("click", () => {
+        this.#instance.querySelector("#session-btn-login").addEventListener("click", () => {
             this.destroy();
         });
 
-        container.appendChild(this.instance);
+        container.appendChild(this.#instance);
 
-        return this.instance;
+        return this.#instance;
     }
 
     static async #loadSessionScreemTemplate() {
@@ -35,6 +38,6 @@ export class SessionScreem {
     }
 
     static destroy() {
-        this.instance.remove();
+        this.#instance.remove();
     }
 }
