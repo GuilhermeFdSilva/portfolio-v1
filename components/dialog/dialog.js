@@ -1,12 +1,15 @@
-export class Dialog {
+import { Task } from "../task/task.js";
+
+export class Dialog extends Task {
   static dialogTemplateCache = null;
 
-  constructor(desktop) {
-    if (!desktop) throw new Error("Desktop element is required to initialize Dialog.");
-    this.desktop = desktop;
+  constructor (context, config = {}) {
+    super(context);    
+    
+    this.#openDialog(config);
   }
 
-  static async loadDialogTemplate() {
+  static async #loadDialogTemplate() {
     if (Dialog.dialogTemplateCache) return Dialog.dialogTemplateCache;
 
     const res = await fetch("./components/dialog/dialog.html");
@@ -16,13 +19,13 @@ export class Dialog {
     return html;
   }
 
-  async openDialog(config = {}) {
+  async #openDialog(config = {}) {
     const {
       title = "Aviso",
       message = "",
     } = config;
 
-    const html = await Dialog.loadDialogTemplate();
+    const html = await Dialog.#loadDialogTemplate();
 
     const wrapper = document.createElement("div");
     wrapper.innerHTML = html;
@@ -32,10 +35,11 @@ export class Dialog {
     dialog.querySelector(".dialog-title").textContent = title;
     dialog.querySelector(".dialog-message").textContent = message;
 
-    const close = () => dialog.remove();
-    dialog.querySelector(".dialog-close").onclick = close;
-    dialog.querySelector(".dialog-confirm").onclick = close;
+    const closeButtons = [
+      dialog.querySelector(".dialog-confirm"),
+      dialog.querySelector(".dialog-close")
+    ];
 
-    desktop.appendChild(dialog);
+    this.openTask(dialog, closeButtons);
   }
 }
