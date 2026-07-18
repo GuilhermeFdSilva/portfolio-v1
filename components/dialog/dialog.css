@@ -22,3 +22,14 @@
 .dialog-main-content {
     text-align: center;
 }
+
+.dialog-title-container {
+    align-items: center;
+}
+
+.dialog-title {
+    padding-top: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
