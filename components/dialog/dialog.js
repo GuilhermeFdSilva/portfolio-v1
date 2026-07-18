@@ -3,9 +3,9 @@ import { Task } from "../task/task.js";
 export class Dialog extends Task {
   static dialogTemplateCache = null;
 
-  constructor (context, config = {}) {
-    super(context);    
-    
+  constructor(context, config = {}) {
+    super(context);
+
     this.#openDialog(config);
   }
 
@@ -23,6 +23,8 @@ export class Dialog extends Task {
     const {
       title = "Aviso",
       message = "",
+      iconSrc = "",
+      iconAlt = "icon"
     } = config;
 
     const html = await Dialog.#loadDialogTemplate();
@@ -31,15 +33,25 @@ export class Dialog extends Task {
     wrapper.innerHTML = html;
 
     const dialog = wrapper.firstElementChild;
+    const titleIcon = dialog.querySelector(".dialog-task-icon");
 
     dialog.querySelector(".dialog-title").textContent = title;
     dialog.querySelector(".dialog-message").textContent = message;
+
+    titleIcon.alt = iconAlt;
+    if (iconSrc) titleIcon.src = iconSrc;
 
     const closeButtons = [
       dialog.querySelector(".dialog-confirm"),
       dialog.querySelector(".dialog-close")
     ];
 
-    this.openTask(dialog, closeButtons);
+    this.openTask(dialog, closeButtons, {
+      title,
+      icon: {
+        src: iconSrc,
+        alt: iconAlt
+      }
+    });
   }
 }

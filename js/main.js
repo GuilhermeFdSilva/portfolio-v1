@@ -8,6 +8,7 @@ const sessionScreem = await SessionScreem.getSessionScreem(document.getElementBy
 const desktop = document.getElementById("desktop");
 
 new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!' });
+new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!' });
 
 sysBoot.startBoot();
 
