@@ -120,3 +120,9 @@
 .interface-draggable {
     position: absolute;
 }
+
+.interface-task-icon {
+    width: var(--interface-button-size);
+    height: var(--interface-button-size);
+    object-fit: contain;
+}
