@@ -18,6 +18,7 @@
 }
 
 #taskbar-start-button {
+    flex-shrink: 0;
     height: var(--taskbar-start-button-height);
     padding: var(--taskbar-start-button-padding);
     display: flex;
@@ -31,9 +32,12 @@
 
 #taskbar-apps {
     flex-grow: 1;
+    overflow-x: scroll;
+    scrollbar-width: none;
 }
 
 #taskbar-system {
+    flex-shrink: 0;
     padding: var(--interface-content-padding);
     display: flex;
     align-items: center;
