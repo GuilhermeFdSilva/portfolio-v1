@@ -1,35 +1,52 @@
 import { DragManager } from "./draggable/draggable.js";
 
 export class Task {
-    static context = null;
-    static openTasks = [];
-
+    static #context = null;
+    static #openTasks = [];
     static #nextTaskId = 0;
     static #zIndex = 0;
     static #observers = new Map();
     static #dragManager = null;
 
-    taskID = "";
-    taskTitle = "";
-    taskIcon = { src: "", alt: "icon" };
-    taskActive = false;
-    taskFullScream = false;
-    taskZIndex = 0;
-    taskElement = null;
-
+    #taskID = "";
+    #taskTitle = "";
+    #taskIcon = { src: "", alt: "icon" };
+    #taskActive = false;
+    #taskZIndex = 0;
+    #taskElement = null;
     #focusHandler = null;
     #closeHandlers = [];
 
     constructor(context) {
-        if (!Task.context) {
+        if (!Task.#context) {
             if (!(context instanceof HTMLElement)) {
                 throw new Error("The application context can't be NULL.");
             }
 
-            Task.context = context;
+            Task.#context = context;
         }
 
         Task.#configureDragManager();
+    }
+
+    get taskID() {
+        return this.#taskID;
+    }
+
+    get taskTitle() {
+        return this.#taskTitle;
+    }
+
+    get taskIcon() {
+        return { ...this.#taskIcon };
+    }
+
+    get taskActive() {
+        return this.#taskActive;
+    }
+
+    get taskZIndex() {
+        return this.#taskZIndex;
     }
 
     static subscribe(eventName, observer) {
@@ -47,55 +64,45 @@ export class Task {
     }
 
     static unsubscribe(eventName, observer) {
-        Task.#observers.get(eventName)?.delete(observer);
+        const observers = Task.#observers.get(eventName);
+        if (!observers) return;
+
+        observers.delete(observer);
+
+        if (!observers.size) {
+            Task.#observers.delete(eventName);
+        }
     }
 
     static getOpenTasks() {
-        return [...Task.openTasks];
-    }
-
-    static #notify(eventName, detail = {}) {
-        Task.#observers.get(eventName)?.forEach(observer => observer(detail));
-        Task.#observers.get("*")?.forEach(observer => observer({ eventName, ...detail }));
-    }
-
-    static #configureDragManager() {
-        if (Task.#dragManager) return;
-
-        Task.#dragManager = new DragManager();
-        Task.#dragManager.subscribe(({ type, detail }) => {
-            if (type === "drag:start") {
-                Task.activateTaskByElement(detail.element);
-            }
-        });
+        return [...Task.#openTasks];
     }
 
     openTask(taskElement, closeElements = [], config = {}) {
-        if (!(taskElement instanceof HTMLElement)) return;
-        if (this.taskElement) return;
+        if (!(taskElement instanceof HTMLElement) || this.#taskElement) return;
 
         const {
             title = "",
             icon = {}
         } = config;
 
-        this.taskID = Task.getTaskId();
-        this.taskTitle = title;
-        this.taskIcon = {
+        this.#taskID = Task.#getTaskId();
+        this.#taskTitle = title;
+        this.#taskIcon = {
             src: icon.src ?? "",
             alt: icon.alt ?? "icon"
         };
-        this.taskElement = taskElement;
+        this.#taskElement = taskElement;
 
-        taskElement.id = this.taskID;
-        taskElement.dataset.taskId = this.taskID;
+        taskElement.id = this.#taskID;
+        taskElement.dataset.taskId = this.#taskID;
 
         this.#focusHandler = () => this.focusTask();
-        taskElement.addEventListener("mousedown", this.#focusHandler);
+        taskElement.addEventListener("pointerdown", this.#focusHandler);
 
-        Task.openTasks.push(this);
-        Task.context.appendChild(taskElement);
-        Task.#dragManager.register(taskElement, Task.context);
+        Task.#openTasks.push(this);
+        Task.#context.appendChild(taskElement);
+        Task.#dragManager.register(taskElement, Task.#context);
 
         this.closeTask(closeElements);
         this.focusTask();
@@ -103,34 +110,23 @@ export class Task {
         Task.#notify("task:opened", { task: this });
     }
 
-    static getTaskId() {
-        const id = `task-${Task.#nextTaskId}`;
-        Task.#nextTaskId++;
-
-        return id;
-    }
-
     focusTask() {
-        if (!Task.openTasks.includes(this) || !this.taskElement) return;
+        if (!Task.#openTasks.includes(this) || !this.#taskElement) return;
+        if (this.#taskActive) return;
 
-        Task.openTasks.forEach(task => {
-            task.taskActive = false;
-            task.taskElement?.removeAttribute("data-task-active");
+        Task.#openTasks.forEach(task => {
+            task.#taskActive = false;
+            task.#taskElement?.removeAttribute("data-task-active");
         });
 
         Task.#zIndex++;
 
-        this.taskActive = true;
-        this.taskZIndex = Task.#zIndex;
-        this.taskElement.style.zIndex = this.taskZIndex;
-        this.taskElement.dataset.taskActive = "true";
+        this.#taskActive = true;
+        this.#taskZIndex = Task.#zIndex;
+        this.#taskElement.style.zIndex = this.#taskZIndex;
+        this.#taskElement.dataset.taskActive = "true";
 
         Task.#notify("task:focused", { task: this });
-    }
-
-    static activateTaskByElement(taskElement) {
-        const task = Task.openTasks.find(item => item.taskElement === taskElement);
-        task?.focusTask();
     }
 
     closeTask(closeElements = []) {
@@ -145,35 +141,74 @@ export class Task {
     }
 
     removeTask() {
-        const taskIndex = Task.openTasks.indexOf(this);
+        const taskIndex = Task.#openTasks.indexOf(this);
         if (taskIndex === -1) return;
 
-        const wasActive = this.taskActive;
+        const wasActive = this.#taskActive;
 
+        this.#removeCloseListeners();
+
+        if (this.#taskElement && this.#focusHandler) {
+            this.#taskElement.removeEventListener("pointerdown", this.#focusHandler);
+        }
+
+        Task.#dragManager.unregister(this.#taskElement);
+        this.#taskElement?.remove();
+        Task.#openTasks.splice(taskIndex, 1);
+
+        this.#taskActive = false;
+        Task.#notify("task:closed", { task: this });
+
+        if (wasActive) {
+            Task.#focusHighestTask();
+        }
+
+        this.#taskElement = null;
+        this.#focusHandler = null;
+    }
+
+    static #configureDragManager() {
+        if (Task.#dragManager) return;
+
+        Task.#dragManager = new DragManager();
+        Task.#dragManager.subscribe(({ type, detail }) => {
+            if (type === "drag:start") {
+                Task.#activateTaskByElement(detail.element);
+            }
+        });
+    }
+
+    static #activateTaskByElement(taskElement) {
+        const task = Task.#openTasks.find(item => item.#taskElement === taskElement);
+        task?.focusTask();
+    }
+
+    static #focusHighestTask() {
+        if (!Task.#openTasks.length) return;
+
+        const nextTask = [...Task.#openTasks]
+            .sort((taskA, taskB) => taskB.#taskZIndex - taskA.#taskZIndex)[0];
+
+        nextTask.focusTask();
+    }
+
+    static #getTaskId() {
+        const id = `task-${Task.#nextTaskId}`;
+        Task.#nextTaskId++;
+
+        return id;
+    }
+
+    static #notify(eventName, detail = {}) {
+        Task.#observers.get(eventName)?.forEach(observer => observer(detail));
+        Task.#observers.get("*")?.forEach(observer => observer({ eventName, ...detail }));
+    }
+
+    #removeCloseListeners() {
         this.#closeHandlers.forEach(({ element, handler }) => {
             element.removeEventListener("click", handler);
         });
+
         this.#closeHandlers = [];
-
-        if (this.taskElement && this.#focusHandler) {
-            this.taskElement.removeEventListener("mousedown", this.#focusHandler);
-        }
-
-        Task.#dragManager.unregister(this.taskElement);
-        this.taskElement?.remove();
-        Task.openTasks.splice(taskIndex, 1);
-
-        this.taskActive = false;
-        Task.#notify("task:closed", { task: this });
-
-        if (wasActive && Task.openTasks.length) {
-            const nextTask = [...Task.openTasks]
-                .sort((taskA, taskB) => taskB.taskZIndex - taskA.taskZIndex)[0];
-
-            nextTask.focusTask();
-        }
-
-        this.taskElement = null;
-        this.#focusHandler = null;
     }
 }

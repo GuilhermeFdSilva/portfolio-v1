@@ -1,128 +1,213 @@
 export class DragManager {
-  #active = null;
-  #container = null;
-  #offsetX = 0;
-  #offsetY = 0;
-  #registeredElements = new Map();
-  #observers = new Set();
+    #activeElement = null;
+    #activeContainer = null;
+    #activePointerId = null;
+    #captureElement = null;
+    #offsetX = 0;
+    #offsetY = 0;
+    #registeredElements = new Map();
+    #observers = new Set();
 
-  constructor() {
-    this.#initGlobalEvents();
-  }
-
-  subscribe(observer) {
-    if (typeof observer !== "function") {
-      throw new TypeError("The observer must be a function.");
+    constructor() {
+        this.#initializeGlobalEvents();
     }
 
-    this.#observers.add(observer);
+    subscribe(observer) {
+        if (typeof observer !== "function") {
+            throw new TypeError("The observer must be a function.");
+        }
 
-    return () => this.#observers.delete(observer);
-  }
+        this.#observers.add(observer);
 
-  notify(type, detail = {}) {
-    this.#observers.forEach(observer => observer({ type, detail }));
-  }
-
-  register(element, container = element?.parentElement) {
-    if (!(element instanceof HTMLElement)) return;
-
-    const dragContainer = container instanceof HTMLElement
-      ? container
-      : document.documentElement;
-
-    this.#registeredElements.set(element, dragContainer);
-    element.dataset.draggableInit = "true";
-  }
-
-  unregister(element) {
-    if (!(element instanceof HTMLElement)) return;
-
-    this.#registeredElements.delete(element);
-    delete element.dataset.draggableInit;
-
-    if (this.#active === element) {
-      this.#clearActiveElement();
+        return () => this.#observers.delete(observer);
     }
-  }
 
-  #initGlobalEvents() {
-    document.addEventListener("mousedown", event => {
-      if (event.button !== 0) return;
+    register(element, container = element?.parentElement) {
+        if (!(element instanceof HTMLElement)) return;
 
-      const target = this.getDraggableFromPoint(event.clientX, event.clientY);
-      if (!target || !this.#registeredElements.has(target)) return;
+        const dragContainer = container instanceof HTMLElement
+            ? container
+            : document.documentElement;
 
-      const handle = event.target.closest(".drag-handle");
-      const clickedButton = event.target.closest("button");
+        this.#registeredElements.set(element, dragContainer);
+        element.dataset.draggableInit = "true";
 
-      if (!handle || !target.contains(handle) || clickedButton) return;
+        requestAnimationFrame(() => {
+            if (this.#registeredElements.has(element)) {
+                this.#constrainElement(element, dragContainer);
+            }
+        });
+    }
 
-      this.#active = target;
-      this.#container = this.#registeredElements.get(target);
+    unregister(element) {
+        if (!(element instanceof HTMLElement)) return;
 
-      this.#prepareElementPosition(target, this.#container);
+        this.#registeredElements.delete(element);
+        delete element.dataset.draggableInit;
 
-      const targetRect = target.getBoundingClientRect();
-      this.#offsetX = event.clientX - targetRect.left;
-      this.#offsetY = event.clientY - targetRect.top;
+        if (this.#activeElement === element) {
+            this.#finishDrag("drag:cancel");
+        }
+    }
 
-      this.notify("drag:start", { element: target });
-      event.preventDefault();
-    });
+    #initializeGlobalEvents() {
+        document.addEventListener("pointerdown", event => this.#startDrag(event));
+        document.addEventListener("pointermove", event => this.#moveDrag(event));
+        document.addEventListener("pointerup", event => this.#endDrag(event));
+        document.addEventListener("pointercancel", event => this.#cancelDrag(event));
 
-    document.addEventListener("mousemove", event => {
-      if (!this.#active || !this.#container) return;
+        window.addEventListener("resize", () => {
+            requestAnimationFrame(() => this.#constrainRegisteredElements());
+        });
+    }
 
-      const containerRect = this.#container.getBoundingClientRect();
+    #startDrag(event) {
+        if (event.button !== 0) return;
 
-      let x = event.clientX - containerRect.left - this.#offsetX;
-      let y = event.clientY - containerRect.top - this.#offsetY;
+        const handle = event.target instanceof Element
+            ? event.target.closest(".drag-handle")
+            : null;
 
-      const maxX = Math.max(0, containerRect.width - this.#active.offsetWidth);
-      const maxY = Math.max(0, containerRect.height - this.#active.offsetHeight);
+        if (!handle || event.target.closest("button")) return;
 
-      x = Math.max(0, Math.min(x, maxX));
-      y = Math.max(0, Math.min(y, maxY));
+        const draggableElement = handle.closest(".interface-draggable");
+        if (!draggableElement || !this.#registeredElements.has(draggableElement)) return;
 
-      this.#active.style.left = `${x}px`;
-      this.#active.style.top = `${y}px`;
+        this.#activeElement = draggableElement;
+        this.#activeContainer = this.#registeredElements.get(draggableElement);
+        this.#activePointerId = event.pointerId;
+        this.#captureElement = handle;
 
-      this.notify("drag:move", {
-        element: this.#active,
-        position: { x, y }
-      });
-    });
+        this.#prepareElementPosition(draggableElement, this.#activeContainer);
 
-    document.addEventListener("mouseup", () => {
-      if (!this.#active) return;
+        const elementRect = draggableElement.getBoundingClientRect();
+        this.#offsetX = event.clientX - elementRect.left;
+        this.#offsetY = event.clientY - elementRect.top;
 
-      this.notify("drag:end", { element: this.#active });
-      this.#clearActiveElement();
-    });
-  }
+        if (typeof handle.setPointerCapture === "function") {
+            handle.setPointerCapture(event.pointerId);
+        }
 
-  #prepareElementPosition(element, container) {
-    const elementRect = element.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
+        this.#notify("drag:start", {
+            element: draggableElement,
+            pointerType: event.pointerType
+        });
 
-    element.style.left = `${elementRect.left - containerRect.left}px`;
-    element.style.top = `${elementRect.top - containerRect.top}px`;
-    element.style.transform = "none";
-  }
+        event.preventDefault();
+    }
 
-  #clearActiveElement() {
-    this.#active = null;
-    this.#container = null;
-    this.#offsetX = 0;
-    this.#offsetY = 0;
-  }
+    #moveDrag(event) {
+        if (!this.#isActivePointer(event)) return;
 
-  getDraggableFromPoint(x, y) {
-    const elements = document.elementsFromPoint(x, y);
+        const containerRect = this.#activeContainer.getBoundingClientRect();
+        const bounds = this.#getMovementBounds(this.#activeElement, this.#activeContainer);
 
-    return elements.find(element =>
-      element.classList?.contains("interface-draggable")
-    );
-  }
+        const desiredX = event.clientX - containerRect.left - this.#offsetX;
+        const desiredY = event.clientY - containerRect.top - this.#offsetY;
+
+        const x = this.#clamp(desiredX, 0, bounds.maxX);
+        const y = this.#clamp(desiredY, 0, bounds.maxY);
+
+        this.#setElementPosition(this.#activeElement, x, y);
+
+        this.#notify("drag:move", {
+            element: this.#activeElement,
+            position: { x, y },
+            pointerType: event.pointerType
+        });
+
+        event.preventDefault();
+    }
+
+    #endDrag(event) {
+        if (!this.#isActivePointer(event)) return;
+
+        this.#finishDrag("drag:end", event.pointerType);
+    }
+
+    #cancelDrag(event) {
+        if (!this.#isActivePointer(event)) return;
+
+        this.#finishDrag("drag:cancel", event.pointerType);
+    }
+
+    #finishDrag(eventName, pointerType = "") {
+        const element = this.#activeElement;
+
+        if (
+            this.#captureElement &&
+            this.#activePointerId !== null &&
+            typeof this.#captureElement.hasPointerCapture === "function" &&
+            this.#captureElement.hasPointerCapture(this.#activePointerId)
+        ) {
+            this.#captureElement.releasePointerCapture(this.#activePointerId);
+        }
+
+        if (element) {
+            this.#notify(eventName, { element, pointerType });
+        }
+
+        this.#clearActiveElement();
+    }
+
+    #isActivePointer(event) {
+        return Boolean(
+            this.#activeElement &&
+            this.#activeContainer &&
+            event.pointerId === this.#activePointerId
+        );
+    }
+
+    #prepareElementPosition(element, container) {
+        const elementRect = element.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const bounds = this.#getMovementBounds(element, container);
+
+        const x = this.#clamp(elementRect.left - containerRect.left, 0, bounds.maxX);
+        const y = this.#clamp(elementRect.top - containerRect.top, 0, bounds.maxY);
+
+        element.style.transform = "none";
+        this.#setElementPosition(element, x, y);
+    }
+
+    #constrainRegisteredElements() {
+        this.#registeredElements.forEach((container, element) => {
+            this.#constrainElement(element, container);
+        });
+    }
+
+    #constrainElement(element, container) {
+        if (!element.isConnected || !container.isConnected) return;
+
+        this.#prepareElementPosition(element, container);
+    }
+
+    #getMovementBounds(element, container) {
+        return {
+            maxX: Math.max(0, container.clientWidth - element.offsetWidth),
+            maxY: Math.max(0, container.clientHeight - element.offsetHeight)
+        };
+    }
+
+    #setElementPosition(element, x, y) {
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+    }
+
+    #clamp(value, minimum, maximum) {
+        return Math.max(minimum, Math.min(value, maximum));
+    }
+
+    #clearActiveElement() {
+        this.#activeElement = null;
+        this.#activeContainer = null;
+        this.#activePointerId = null;
+        this.#captureElement = null;
+        this.#offsetX = 0;
+        this.#offsetY = 0;
+    }
+
+    #notify(type, detail = {}) {
+        this.#observers.forEach(observer => observer({ type, detail }));
+    }
 }

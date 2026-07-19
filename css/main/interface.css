@@ -119,10 +119,16 @@
 
 .interface-draggable {
     position: absolute;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .interface-task-icon {
     width: var(--interface-button-size);
     height: var(--interface-button-size);
     object-fit: contain;
+}
+
+.drag-handle {
+    touch-action: none;
 }
