@@ -1,43 +1,51 @@
 export class SessionScreem {
     static #instance = null;
-
     static #context = null;
+    static #sessionScreemTemplateCache = null;
 
-    constructor(container) {
-        if (!SysBoot.#context) {
-            throw new Error("SessionScream is a singleton class. Use SessionScream.getSessionScream() to get the instance.");
-        }
+    constructor() {
+        throw new Error("SessionScreem is a singleton class. Use SessionScreem.getSessionScreem() to get the instance.");
     }
 
     static async getSessionScreem(container) {
-        if (this.#instance) {
-            return this.#instance;
+        if (SessionScreem.#instance) {
+            return SessionScreem.#instance;
         }
 
-        const sessionScreemHTML = await this.#loadSessionScreemTemplate();
+        if (!(container instanceof HTMLElement)) {
+            throw new TypeError("A valid session container is required.");
+        }
+
+        const sessionScreemHTML = await SessionScreem.#loadSessionScreemTemplate();
         const wrapper = document.createElement("div");
-        
         wrapper.innerHTML = sessionScreemHTML;
 
-        this.#instance = wrapper.firstElementChild;
+        SessionScreem.#context = container;
+        SessionScreem.#instance = wrapper.firstElementChild;
 
-        this.#instance.querySelector("#session-btn-login").addEventListener("click", () => {
-            this.destroy();
-        });
+        SessionScreem.#instance
+            .querySelector("#session-btn-login")
+            .addEventListener("click", () => SessionScreem.destroy());
 
-        container.appendChild(this.#instance);
+        SessionScreem.#context.appendChild(SessionScreem.#instance);
 
-        return this.#instance;
-    }
-
-    static async #loadSessionScreemTemplate() {
-        const res = await fetch("./components/sessionScreem/sessionScreem.html");
-        const html = await res.text();
-
-        return html;
+        return SessionScreem.#instance;
     }
 
     static destroy() {
-        this.#instance.remove();
+        SessionScreem.#instance?.remove();
+        SessionScreem.#instance = null;
+        SessionScreem.#context = null;
+    }
+
+    static async #loadSessionScreemTemplate() {
+        if (SessionScreem.#sessionScreemTemplateCache) {
+            return SessionScreem.#sessionScreemTemplateCache;
+        }
+
+        const response = await fetch("./components/sessionScreem/sessionScreem.html");
+        SessionScreem.#sessionScreemTemplateCache = await response.text();
+
+        return SessionScreem.#sessionScreemTemplateCache;
     }
 }

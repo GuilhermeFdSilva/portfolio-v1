@@ -3,40 +3,41 @@ import { Calendar } from "./calendar/calendar.js";
 import { Task } from "../task/task.js";
 
 export class Taskbar {
-    static taskbar = null;
+    static #taskbar = null;
     static #taskButtons = new Map();
+    static #taskObserverConfigured = false;
+
+    constructor() {
+        throw new Error("Taskbar is a static class and cannot be instantiated.");
+    }
 
     static getTaskbar() {
-        if (Taskbar.taskbar) {
-            return Taskbar.taskbar;
+        if (Taskbar.#taskbar) {
+            return Taskbar.#taskbar;
         }
 
-        Taskbar.taskbar = this.#loadTaskbar();
+        Taskbar.#taskbar = Taskbar.#loadTaskbar();
 
-        return Taskbar.taskbar;
+        return Taskbar.#taskbar;
     }
 
     static async #loadTaskbarTemplate() {
-        const res = await fetch("./components/taskbar/taskbar.html");
-        const html = await res.text();
-
-        return html;
+        const response = await fetch("./components/taskbar/taskbar.html");
+        return response.text();
     }
 
     static async #loadTaskbar() {
         const wrapper = document.createElement("div");
+        wrapper.innerHTML = await Taskbar.#loadTaskbarTemplate();
 
-        wrapper.innerHTML = await this.#loadTaskbarTemplate();
         const taskbar = wrapper.firstElementChild;
-
         const clock = taskbar.querySelector("#taskbar-clock");
         const taskContainer = taskbar.querySelector("#taskbar-apps");
-
-        this.#updateTime(clock);
-        this.#configureTaskObserver(taskContainer);
-
         const startButton = taskbar.querySelector("#taskbar-start-button");
         const calendarButton = taskbar.querySelector("#taskbar-calendar-button");
+
+        Taskbar.#updateTime(clock);
+        Taskbar.#configureTaskObserver(taskContainer);
 
         taskbar.appendChild(await StartMenu.configInstance(startButton));
         taskbar.appendChild(await Calendar.configureInstance(calendarButton));
@@ -45,83 +46,77 @@ export class Taskbar {
     }
 
     static #configureTaskObserver(taskContainer) {
+        if (Taskbar.#taskObserverConfigured) return;
+
+        Taskbar.#taskObserverConfigured = true;
+
         Task.subscribe("task:opened", ({ task }) => {
-            this.#addTaskButton(taskContainer, task);
-            this.#updateActiveTask();
+            Taskbar.#addTaskButton(taskContainer, task);
+            Taskbar.#updateActiveTask();
         });
 
         Task.subscribe("task:closed", ({ task }) => {
-            this.#removeTaskButton(task);
-            this.#updateActiveTask();
+            Taskbar.#removeTaskButton(task);
+            Taskbar.#updateActiveTask();
         });
 
-        Task.subscribe("task:focused", () => this.#updateActiveTask());
+        Task.subscribe("task:focused", () => Taskbar.#updateActiveTask());
 
         Task.getOpenTasks().forEach(task => {
-            this.#addTaskButton(taskContainer, task);
+            Taskbar.#addTaskButton(taskContainer, task);
         });
 
-        this.#updateActiveTask();
+        Taskbar.#updateActiveTask();
     }
 
     static #addTaskButton(taskContainer, task) {
-        if (this.#taskButtons.has(task.taskID)) return;
+        if (Taskbar.#taskButtons.has(task.taskID)) return;
 
         const button = document.createElement("button");
         const icon = document.createElement("img");
+        const taskIcon = task.taskIcon;
 
         button.classList.add("interface-button", "taskbar-task-button");
         button.dataset.taskId = task.taskID;
         button.title = task.taskTitle;
         button.setAttribute("aria-label", task.taskTitle || "Open task");
 
-        icon.alt = task.taskIcon.alt;
-        if (task.taskIcon.src) icon.src = task.taskIcon.src;
+        icon.alt = taskIcon.alt;
+        if (taskIcon.src) icon.src = taskIcon.src;
 
         button.appendChild(icon);
         button.addEventListener("click", () => task.focusTask());
 
-        this.#taskButtons.set(task.taskID, button);
+        Taskbar.#taskButtons.set(task.taskID, button);
         taskContainer.appendChild(button);
     }
 
     static #removeTaskButton(task) {
-        const button = this.#taskButtons.get(task.taskID);
+        const button = Taskbar.#taskButtons.get(task.taskID);
 
         button?.remove();
-        this.#taskButtons.delete(task.taskID);
+        Taskbar.#taskButtons.delete(task.taskID);
     }
 
     static #updateActiveTask() {
         Task.getOpenTasks().forEach(task => {
-            const button = this.#taskButtons.get(task.taskID);
+            const button = Taskbar.#taskButtons.get(task.taskID);
             if (!button) return;
 
             button.classList.toggle("taskbar-task-button-active", task.taskActive);
-            button.setAttribute("aria-pressed", task.taskActive.toString());
+            button.setAttribute("aria-pressed", String(task.taskActive));
         });
     }
 
-    /** Adjust the time to the desired format */
     static #timeFormat(date) {
-        let hours = date?.getHours();
-        let minutes = date?.getMinutes();
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
 
-        hours = hours.toString().padStart(2, "0");
-        minutes = minutes.toString().padStart(2, "0");
-
-        return hours + ":" + minutes;
+        return `${hours}:${minutes}`;
     }
 
-    /** Updates the time regularly */
-    static async #updateTime(clock) {
-        const dateTime = new Date();
-        const formattedTime = this.#timeFormat(dateTime);
-
-        clock.innerText = formattedTime;
-
-        const handler = () => this.#updateTime(clock);
-
-        setTimeout(handler, 1000);
+    static #updateTime(clock) {
+        clock.innerText = Taskbar.#timeFormat(new Date());
+        setTimeout(() => Taskbar.#updateTime(clock), 1000);
     }
 }

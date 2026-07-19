@@ -1,75 +1,76 @@
 export class StartMenu {
-    static startMenu = null;
-    static startMenuButton = null;
-    static startMenuVisible = false;
+    static #startMenu = null;
+    static #startMenuButton = null;
+    static #startMenuVisible = false;
+    static #startMenuTemplateCache = null;
 
-    static configInstance(button) {
-        if (StartMenu.startMenu) {
-            return StartMenu.startMenu;
+    constructor() {
+        throw new Error("StartMenu is a static class and cannot be instantiated.");
+    }
+
+    static async configInstance(button) {
+        if (StartMenu.#startMenu) {
+            return StartMenu.#startMenu;
         }
 
-        StartMenu.startMenu = this.#loadStartMenu();
+        if (!(button instanceof HTMLElement)) {
+            throw new TypeError("A valid start menu button is required.");
+        }
 
-        StartMenu.startMenuButton = button;
+        StartMenu.#startMenu = await StartMenu.#loadStartMenu();
+        StartMenu.#startMenuButton = button;
 
-        StartMenu.startMenuButton.addEventListener("click", (event) => {
+        StartMenu.#startMenuButton.addEventListener("click", event => {
             event.stopPropagation();
-            this.#switchStartMenuVisibility();
+            StartMenu.#switchStartMenuVisibility();
         });
 
-        document.addEventListener("click", (event) => {
-            if (StartMenu.startMenuVisible && !StartMenu.startMenu.contains(event.target) && event.target !== StartMenu.startMenuButton) {
-                event.stopPropagation();
-                this.#switchStartMenuVisibility();
+        document.addEventListener("click", event => {
+            const clickedOutsideMenu = !StartMenu.#startMenu.contains(event.target);
+            const clickedOutsideButton = !StartMenu.#startMenuButton.contains(event.target);
+
+            if (StartMenu.#startMenuVisible && clickedOutsideMenu && clickedOutsideButton) {
+                StartMenu.#switchStartMenuVisibility();
             }
         });
 
-        document.addEventListener("keydown", (event) => {
-            if (StartMenu.startMenuVisible && event.key == "Escape") {
-                event.stopPropagation();
-                this.#switchStartMenuVisibility();
+        document.addEventListener("keydown", event => {
+            if (StartMenu.#startMenuVisible && event.key === "Escape") {
+                StartMenu.#switchStartMenuVisibility();
             }
         });
 
-        return StartMenu.startMenu;
+        return StartMenu.#startMenu;
     }
 
     static getInstance() {
-        if (!StartMenu.startMenuButton) {
-            throw new Error("StartMenu instance not created yet");
+        if (!StartMenu.#startMenuButton) {
+            throw new Error("StartMenu instance not created yet.");
         }
 
-        return StartMenu.startMenuButton;
+        return StartMenu.#startMenuButton;
     }
 
     static async #loadStartMenuTemplate() {
-        const res = await fetch("./components/taskbar/startMenu/startMenu.html");
-        const html = await res.text();
+        if (StartMenu.#startMenuTemplateCache) {
+            return StartMenu.#startMenuTemplateCache;
+        }
 
-        return html;
+        const response = await fetch("./components/taskbar/startMenu/startMenu.html");
+        StartMenu.#startMenuTemplateCache = await response.text();
+
+        return StartMenu.#startMenuTemplateCache;
     }
 
     static async #loadStartMenu() {
         const wrapper = document.createElement("div");
+        wrapper.innerHTML = await StartMenu.#loadStartMenuTemplate();
 
-        wrapper.innerHTML = await this.#loadStartMenuTemplate();
-        const startMenu = wrapper.firstElementChild;
-
-        StartMenu.startMenu = startMenu;
-
-        return startMenu;
+        return wrapper.firstElementChild;
     }
 
-    /**
-     * Change start menu visibility
-     */
     static #switchStartMenuVisibility() {
-        StartMenu.startMenuVisible = !StartMenu.startMenuVisible;
-
-        if (StartMenu.startMenuVisible) {
-            StartMenu.startMenu.style.display = "flex";
-        } else {
-            StartMenu.startMenu.style.display = "none";
-        }
+        StartMenu.#startMenuVisible = !StartMenu.#startMenuVisible;
+        StartMenu.#startMenu.style.display = StartMenu.#startMenuVisible ? "flex" : "none";
     }
 }
