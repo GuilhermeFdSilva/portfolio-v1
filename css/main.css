@@ -32,3 +32,18 @@
   user-select: none;
   outline: none;
 }
+
+html,
+body {
+    width: var(--viewport-width);
+    height: var(--viewport-height);
+    min-height: var(--viewport-height);
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+body {
+    position: fixed;
+    top: var(--viewport-top);
+    left: var(--viewport-left);
+}
