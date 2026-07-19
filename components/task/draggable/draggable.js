@@ -185,7 +185,7 @@ export class DragManager {
     #getMovementBounds(element, container) {
         return {
             maxX: Math.max(0, container.clientWidth - element.offsetWidth),
-            maxY: Math.max(0, container.clientHeight - element.offsetHeight)
+            maxY: Math.max(0, container.clientHeight - element.offsetHeight - 68) // 68 = taskbar height
         };
     }
 
