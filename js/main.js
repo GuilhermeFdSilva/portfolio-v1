@@ -7,8 +7,8 @@ const sysBoot = await SysBoot.getSysBoot(document.getElementById("boot-container
 const sessionScreem = await SessionScreem.getSessionScreem(document.getElementById("session-container"));
 const desktop = document.getElementById("desktop");
 
-new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!' });
-new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!' });
+new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
+new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
 
 sysBoot.startBoot();
 
