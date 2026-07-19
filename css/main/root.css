@@ -91,4 +91,16 @@
         2 * var(--interface-content-gap) -
         var(--interface-title-height)
     );
+
+    --viewport-height: 100vh;
+    --viewport-width: 100vw;
+    --viewport-top: 0px;
+    --viewport-left: 0px;
+}
+
+@supports (height: 100dvh) {
+    :root {
+        --viewport-height: 100dvh;
+        --viewport-width: 100dvw;
+    }
 }
