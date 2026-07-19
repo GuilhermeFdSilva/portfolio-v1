@@ -3,7 +3,9 @@
 #taskbar {
     position: fixed;
     z-index: 8000;
-    inset: auto 0 0;
+    top: calc(var(--viewport-top) + var(--viewport-height) - var(--taskbar-height));
+    left: var(--viewport-left);
+    width: var(--viewport-width);
     height: var(--taskbar-height);
     padding: var(--interface-content-padding);
     background-color: var(--surface);
@@ -81,10 +83,4 @@
     border-right: var(--interface-button-focus-shadow) solid var(--gray-light);
     border-top: var(--interface-button-focus-shadow) solid var(--gray-dark);
     border-bottom: var(--interface-button-focus-shadow) solid var(--gray-light);
-}
-
-@media (max-width: 768px) {
-    #taskbar-start-button span  {
-        display: none;
-    }
 }

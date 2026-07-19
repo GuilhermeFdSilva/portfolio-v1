@@ -1,7 +1,10 @@
 #crt-overlay {
     pointer-events: none;
     position: fixed;
-    inset: 0;
+    top: var(--viewport-top);
+    left: var(--viewport-left);
+    width: var(--viewport-width);
+    height: var(--viewport-height);
     z-index: 9999;
 
     background: repeating-linear-gradient(
