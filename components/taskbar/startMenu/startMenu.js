@@ -1,3 +1,5 @@
+import { Dialog } from "../../dialog/dialog.js";
+
 export class StartMenu {
     static #startMenu = null;
     static #startMenuButton = null;
@@ -66,11 +68,25 @@ export class StartMenu {
         const wrapper = document.createElement("div");
         wrapper.innerHTML = await StartMenu.#loadStartMenuTemplate();
 
+        StartMenu.#configureDefoutActions(wrapper.firstElementChild);
+
         return wrapper.firstElementChild;
     }
 
     static #switchStartMenuVisibility() {
         StartMenu.#startMenuVisible = !StartMenu.#startMenuVisible;
         StartMenu.#startMenu.style.display = StartMenu.#startMenuVisible ? "flex" : "none";
+    }
+
+    static #configureDefoutActions(menu) {
+        if (menu instanceof HTMLElement) {
+            menu.querySelectorAll(".start-menu-option").forEach((element) => {
+                element.addEventListener("click", () => {
+                    StartMenu.#switchStartMenuVisibility();
+
+                    new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
+                });
+            });
+        }
     }
 }

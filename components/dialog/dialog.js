@@ -199,62 +199,48 @@ export class Dialog extends Task {
         );
     }
 
-    static #advanceCascadeState(state, bounds) {
-        const horizontalSpace = Math.max(
-            0,
-            bounds.maxX - bounds.minX
-        );
+static #advanceCascadeState(state, bounds) {
+    const horizontalSpace = Math.max(
+        0,
+        bounds.maxX - bounds.minX
+    );
 
-        const horizontalStep =
-            horizontalSpace >= Dialog.#cascadeStep
-                ? Dialog.#cascadeStep
-                : 0;
+    const horizontalStep =
+        horizontalSpace >= Dialog.#cascadeStep
+            ? Dialog.#cascadeStep
+            : 0;
 
-        const nextX = state.x + horizontalStep;
-        const nextY = state.y + Dialog.#cascadeStep;
+    const nextX = state.x + horizontalStep;
+    const nextY = state.y + Dialog.#cascadeStep;
 
-        /*
-         * Enquanto existir espaço vertical, avança para baixo
-         * e um pouco para a direita.
-         */
-        if (nextY <= bounds.maxY) {
-            state.x = Dialog.#clamp(
-                nextX,
-                bounds.minX,
-                bounds.maxX
-            );
+    if (
+        nextX <= bounds.maxX &&
+        nextY <= bounds.maxY
+    ) {
+        state.x = nextX;
+        state.y = nextY;
 
-            state.y = nextY;
-
-            return;
-        }
-
-        /*
-         * Ao chegar à parte inferior, volta para cima e inicia
-         * uma nova coluna à direita.
-         */
-        const columnStep = Math.min(
-            Dialog.#cascadeColumnStep,
-            horizontalSpace
-        );
-
-        let nextColumnX = state.columnX + columnStep;
-
-        /*
-         * Ao alcançar o limite direito, reinicia a cascata
-         * pelo lado esquerdo da área disponível.
-         */
-        if (
-            columnStep === 0 ||
-            nextColumnX > bounds.maxX
-        ) {
-            nextColumnX = bounds.minX;
-        }
-
-        state.columnX = nextColumnX;
-        state.x = nextColumnX;
-        state.y = bounds.minY;
+        return;
     }
+
+    const columnStep = Math.min(
+        Dialog.#cascadeColumnStep,
+        horizontalSpace
+    );
+
+    let nextColumnX = state.columnX + columnStep;
+
+    if (
+        columnStep === 0 ||
+        nextColumnX > bounds.maxX
+    ) {
+        nextColumnX = bounds.minX;
+    }
+
+    state.columnX = nextColumnX;
+    state.x = nextColumnX;
+    state.y = bounds.minY;
+}
 
     static #getPositionBounds(dialog, context) {
         const maximumX = Math.max(
