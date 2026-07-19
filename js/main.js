@@ -12,6 +12,9 @@ const desktop = document.getElementById("desktop");
 
 new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
 new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
+new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
+new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
+new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
 
 sysBoot.startBoot();
 
