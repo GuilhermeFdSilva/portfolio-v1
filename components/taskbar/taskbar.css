@@ -82,3 +82,9 @@
     border-top: var(--interface-button-focus-shadow) solid var(--gray-dark);
     border-bottom: var(--interface-button-focus-shadow) solid var(--gray-light);
 }
+
+@media (max-width: 768px) {
+    #taskbar-start-button span  {
+        display: none;
+    }
+}
