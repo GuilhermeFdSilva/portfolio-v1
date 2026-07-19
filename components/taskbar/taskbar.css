@@ -31,6 +31,10 @@
 }
 
 #taskbar-apps {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--interface-content-gap);
     flex-grow: 1;
     overflow-x: scroll;
     scrollbar-width: none;
@@ -58,15 +62,6 @@
     cursor: default;
 }
 
-#taskbar-apps {
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    gap: var(--interface-content-gap);
-    overflow-x: auto;
-    overflow-y: hidden;
-}
-
 .taskbar-task-button {
     width: var(--taskbar-start-button-height);
     height: var(--taskbar-start-button-height);
@@ -90,7 +85,7 @@
 }
 
 @media (max-width: 768px) {
-    #taskbar-start-button span  {
+    #taskbar-start-button span {
         display: none;
     }
 }
