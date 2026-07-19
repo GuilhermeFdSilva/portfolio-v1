@@ -1,35 +1,54 @@
 @import '../../css/main/root.css';
 
 .dialog {
+    width: min(340px, calc(100% - 2 * var(--interface-content-padding)));
     max-width: 340px;
+    max-height: calc(100% - 2 * var(--interface-content-padding));
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
 }
 
 .dialog-main-container {
     min-height: 80px;
     display: flex;
     align-items: center;
+    overflow: auto;
 }
 
 .dialog-icon {
+    flex-shrink: 0;
     font-size: 40px;
     color: var(--accent-dark);
     padding: var(--interface-content-padding);
 }
 
 .dialog-main-content {
+    min-width: 0;
     text-align: center;
+    overflow-wrap: anywhere;
 }
 
 .dialog-title-container {
+    min-width: 0;
+    flex: 1;
     align-items: center;
 }
 
 .dialog-title {
+    min-width: 0;
     padding-top: 6px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+@media (max-width: 510px) {
+    .dialog {
+        width: calc(100% - 2 * var(--interface-content-padding));
+        max-width: none;
+    }
 }
