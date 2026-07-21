@@ -12,6 +12,7 @@ export class Task {
     #taskTitle = "";
     #taskIcon = { src: "", alt: "icon" };
     #taskActive = false;
+    #taskMinimized = false;
     #taskZIndex = 0;
     #taskElement = null;
     #focusHandler = null;
@@ -47,6 +48,10 @@ export class Task {
 
     get taskZIndex() {
         return this.#taskZIndex;
+    }
+
+    get taskMinimized() {
+        return this.#taskMinimized;
     }
 
     static subscribe(eventName, observer) {
@@ -112,6 +117,14 @@ export class Task {
 
     focusTask() {
         if (!Task.#openTasks.includes(this) || !this.#taskElement) return;
+
+        if (this.#taskMinimized) {
+            this.#taskMinimized = false;
+            this.#taskElement.hidden = false;
+            delete this.#taskElement.dataset.taskMinimized;
+            Task.#notify("task:restored", { task: this });
+        }
+
         if (this.#taskActive) return;
 
         Task.#openTasks.forEach(task => {
@@ -127,6 +140,49 @@ export class Task {
         this.#taskElement.dataset.taskActive = "true";
 
         Task.#notify("task:focused", { task: this });
+    }
+
+
+    minimizeTask() {
+        if (
+            !Task.#openTasks.includes(this) ||
+            !this.#taskElement ||
+            this.#taskMinimized
+        ) {
+            return;
+        }
+
+        const wasActive = this.#taskActive;
+
+        this.#taskMinimized = true;
+        this.#taskActive = false;
+        this.#taskElement.hidden = true;
+        this.#taskElement.style.display = "none";
+        this.#taskElement.removeAttribute("data-task-active");
+        this.#taskElement.dataset.taskMinimized = "true";
+
+        Task.#notify("task:minimized", { task: this });
+
+        if (wasActive) {
+            Task.#focusHighestTask(this);
+        }
+    }
+
+    restoreTask() {
+        if (
+            !Task.#openTasks.includes(this) ||
+            !this.#taskElement ||
+            !this.#taskMinimized
+        ) {
+            return;
+        }
+
+        this.#taskMinimized = false;
+        this.#taskElement.hidden = false;
+        this.#taskElement.style.display = "flex";
+        delete this.#taskElement.dataset.taskMinimized;
+
+        Task.#notify("task:restored", { task: this });
     }
 
     closeTask(closeElements = []) {
@@ -157,6 +213,7 @@ export class Task {
         Task.#openTasks.splice(taskIndex, 1);
 
         this.#taskActive = false;
+        this.#taskMinimized = false;
         Task.#notify("task:closed", { task: this });
 
         if (wasActive) {
@@ -183,10 +240,14 @@ export class Task {
         task?.focusTask();
     }
 
-    static #focusHighestTask() {
-        if (!Task.#openTasks.length) return;
+    static #focusHighestTask(excludedTask = null) {
+        const availableTasks = Task.#openTasks.filter(task => {
+            return task !== excludedTask && !task.#taskMinimized;
+        });
 
-        const nextTask = [...Task.#openTasks]
+        if (!availableTasks.length) return;
+
+        const nextTask = availableTasks
             .sort((taskA, taskB) => taskB.#taskZIndex - taskA.#taskZIndex)[0];
 
         nextTask.focusTask();

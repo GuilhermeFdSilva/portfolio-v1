@@ -61,6 +61,8 @@ export class Taskbar {
         });
 
         Task.subscribe("task:focused", () => Taskbar.#updateActiveTask());
+        Task.subscribe("task:minimized", () => Taskbar.#updateActiveTask());
+        Task.subscribe("task:restored", () => Taskbar.#updateActiveTask());
 
         Task.getOpenTasks().forEach(task => {
             Taskbar.#addTaskButton(taskContainer, task);

@@ -72,6 +72,7 @@ export class DragManager {
 
         const draggableElement = handle.closest(".interface-draggable");
         if (!draggableElement || !this.#registeredElements.has(draggableElement)) return;
+        if (draggableElement.dataset.windowMaximized === "true") return;
 
         this.#activeElement = draggableElement;
         this.#activeContainer = this.#registeredElements.get(draggableElement);
@@ -177,7 +178,7 @@ export class DragManager {
     }
 
     #constrainElement(element, container) {
-        if (!element.isConnected || !container.isConnected) return;
+        if (!element.isConnected || !container.isConnected || element.hidden) return;
 
         this.#prepareElementPosition(element, container);
     }
