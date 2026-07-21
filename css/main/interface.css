@@ -9,7 +9,7 @@
 }
 
 .interface-title-bar {
-    height: var(--interface-title-height);
+    min-height: var(--interface-title-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -19,9 +19,34 @@
     border-bottom: var(--interface-divider-shadow) solid var(--gray-dark);
 }
 
-.interface-title-bar article {
+.interface-title-identity,
+.interface-window-controls {
     display: flex;
+    align-items: center;
     gap: var(--interface-content-gap);
+}
+
+.interface-title-identity {
+    min-width: 0;
+    flex: 1;
+}
+
+.interface-title-text {
+    min-width: 0;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transform: translateY(2px);
+}
+
+.interface-window-controls {
+    flex-shrink: 0;
+}
+
+.interface-window-controls .interface-button {
+    display: grid;
+    place-items: center;
 }
 
 .interface-button {
@@ -48,9 +73,31 @@
     border-bottom: var(--interface-button-focus-shadow) solid var(--gray-light);
 }
 
+.interface-button:focus-visible {
+    outline: var(--interface-divider-shadow) solid var(--info-light);
+    outline-offset: var(--interface-divider-shadow);
+}
+
+.interface-minimize-button span {
+    transform: translateX(1px);
+}
+
+.interface-maximize-button span {
+    transform: translateX(1px);
+}
+
+.interface-restore-button span {
+    font-weight: bolder;
+    transform: translateX(-1px) translateY(2px);
+}
+
 .interface-close-button {
     background-color: var(--accent-dark);
-    color: var(--text)
+    color: var(--text);
+}
+
+.interface-close-button span {
+    transform: translateX(2px) translateY(1px);
 }
 
 .interface-close-button:active {

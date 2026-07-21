@@ -1,0 +1,53 @@
+@import '../../css/main/root.css';
+
+.application-window {
+    width: min(760px, calc(100% - 2 * var(--interface-content-padding)));
+    height: min(520px, calc(100% - 2 * var(--interface-content-padding)));
+    min-width: min(320px, 100%);
+    min-height: min(220px, 100%);
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.application-window-content {
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    overflow: auto;
+    padding: var(--interface-content-padding);
+    background-color: var(--surface);
+}
+
+.application-window[data-window-maximized="true"] {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+}
+
+.application-wip-content {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: calc(var(--interface-content-gap) * 2);
+    text-align: center;
+    color: var(--text-dark);
+}
+
+.application-wip-content h2 {
+    color: var(--primary-dark);
+}
+
+@media (max-width: 510px) {
+    .application-window {
+        width: calc(100% - 2 * var(--interface-content-padding));
+        height: calc(100% - 2 * var(--interface-content-padding));
+        min-width: 0;
+        min-height: 0;
+    }
+}

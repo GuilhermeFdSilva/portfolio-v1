@@ -32,20 +32,6 @@
     overflow-wrap: anywhere;
 }
 
-.dialog-title-container {
-    min-width: 0;
-    flex: 1;
-    align-items: center;
-}
-
-.dialog-title {
-    min-width: 0;
-    padding-top: 6px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
 @media (max-width: 510px) {
     .dialog {
         width: calc(100% - 2 * var(--interface-content-padding));
