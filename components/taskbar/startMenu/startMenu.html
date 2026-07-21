@@ -1,105 +1,76 @@
 <section id="start-menu-container" class="interface-window" style="display: none;">
-    <!-- Start menu system title -->
     <article id="start-menu-title">
-        <h3>
-            Aurora
-        </h3>
-        <span>
-            &copy;
-        </span>
+        <h3>Aurora</h3>
+        <span>&copy;</span>
     </article>
 
-    <!-- System container options -->
     <section id="start-menu-options-main-container">
-        <!-- System aplications -->
-        <section id="start-menu-programs-container" class="start-menu-options-container">
-            <section class="start-menu-option">
-                <article class="start-menu-option-label">
-                    <img src="assets/apps.png" alt="Aplications" class="start-menu-option-label-img">
-                    <p class="start-menu-option-label-txt">
-                        Aplicativos
-                    </p> 
-                    <p class="start-menu-option-label-arrow">
-                        ▶
-                    </p>
-                </article>
-                <section class="start-menu-suboptions interface-window">
-                    <article class="start-menu-option">
-                        <img src="assets/calendar.png" alt="Doc" class="start-menu-option-label-img">
-                        <p class="start-menu-option-label-txt">
-                            Aplicativos
-                        </p>
-                    </article>
-                    <article class="start-menu-option">
-                        <img src="assets/calendar.png" alt="Doc" class="start-menu-option-label-img">
-                        <p class="start-menu-option-label-txt">
-                            Aplicativos
-                        </p>
-                    </article>
-                </section>
-            </section>
-            <section class="start-menu-option">
-                <article class="start-menu-option-label">
-                    <img src="assets/docs.png" alt="Documents" class="start-menu-option-label-img">
-                    <p class="start-menu-option-label-txt">
-                        Documentos
-                    </p>
-                    <p class="start-menu-option-label-arrow">
-                        ▶
-                    </p>
-                </article>
-                <section class="start-menu-suboptions interface-window">
-                    <article class="start-menu-option">
-                        <img src="assets/calendar.png" alt="Doc" class="start-menu-option-label-img">
-                        <p class="start-menu-option-label-txt">
-                            Aplicativos
-                        </p>
-                    </article>
-                    <article class="start-menu-option">
-                        <img src="assets/calendar.png" alt="Doc" class="start-menu-option-label-img">
-                        <p class="start-menu-option-label-txt">
-                            Aplicativos
-                        </p>
-                    </article>
-                </section>
-            </section>
-        </section>
+        <!-- Listas e aplicativos criados pelo JavaScript. -->
+        <section
+            id="start-menu-programs-container"
+            class="start-menu-options-container"
+        ></section>
 
         <div class="interface-horizontal-divider"></div>
 
-        <!-- System session options -->
+        <!-- Opções fixas do sistema. -->
         <section class="start-menu-options-container">
-            <section class="start-menu-option">
-                <article class="start-menu-option-label">
-                    <img src="assets/logoff.png" alt="Log off" class="start-menu-option-label-img">
-                    <p class="start-menu-option-label-txt">
-                        Sair...
-                    </p>
-                </article>
-            </section>
-            <section class="start-menu-option">
-                <article class="start-menu-option-label">
-                    <img src="assets/power.png" alt="Power button" class="start-menu-option-label-img">
-                    <p class="start-menu-option-label-txt">
-                        Desligar...
-                    </p>
-                    <p class="start-menu-option-label-arrow">
-                        ▶
-                    </p>
-                </article>
+            <button
+                id="start-menu-logoff-button"
+                class="start-menu-option"
+                type="button"
+            >
+                <img
+                    src="assets/logoff.png"
+                    alt="Sair"
+                    class="start-menu-option-label-img"
+                >
+                <span class="start-menu-option-label-txt">Sair...</span>
+            </button>
+
+            <section id="start-menu-power-entry" class="start-menu-list-entry">
+                <button
+                    id="start-menu-power-button"
+                    class="start-menu-option"
+                    type="button"
+                    aria-haspopup="menu"
+                    aria-expanded="false"
+                >
+                    <img
+                        src="assets/power.png"
+                        alt="Opções de energia"
+                        class="start-menu-option-label-img"
+                    >
+                    <span class="start-menu-option-label-txt">Desligar...</span>
+                    <span class="start-menu-option-label-arrow">▶</span>
+                </button>
+
                 <section class="start-menu-shutdown-options interface-window">
-                    <article class="start-menu-option" id="restart-button">
-                        <img src="assets/restart.png" alt="Restart" class="start-menu-option-label-img">
-                        <p class="start-menu-option-label-txt">
-                            Reiniciar
-                        </p>
-                    </article>
-                    <article class="start-menu-option">
-                        <img src="assets/power.png" alt="Shutdown" class="start-menu-option-label-img">
-                        <p class="start-menu-option-label-txt">
-                            Desligar
-                        </p>
-                    </article>
+                    <button
+                        id="restart-button"
+                        class="start-menu-option"
+                        type="button"
+                    >
+                        <img
+                            src="assets/restart.png"
+                            alt="Reiniciar"
+                            class="start-menu-option-label-img"
+                        >
+                        <span class="start-menu-option-label-txt">Reiniciar</span>
+                    </button>
+
+                    <button
+                        id="shutdown-button"
+                        class="start-menu-option"
+                        type="button"
+                    >
+                        <img
+                            src="assets/power.png"
+                            alt="Desligar"
+                            class="start-menu-option-label-img"
+                        >
+                        <span class="start-menu-option-label-txt">Desligar</span>
+                    </button>
                 </section>
             </section>
         </section>

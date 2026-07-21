@@ -42,9 +42,23 @@
     flex-grow: 1;
 }
 
+.start-menu-options-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.start-menu-list-entry {
+    position: relative;
+}
+
 .start-menu-option {
     position: relative;
     cursor: pointer;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
     width: var(--start-menu-option-width);
     display: flex;
     align-items: center;
@@ -62,19 +76,17 @@
     height: 100%;
 }
 
-.start-menu-option:hover {
+.start-menu-option:hover,
+.start-menu-option:focus-visible,
+.start-menu-list-open > .start-menu-option {
     background-color: var(--primary-dark);
     color: var(--text);
-}
-
-.start-menu-option-label {
-    display: flex;
-    align-items: center;
-    gap: var(--interface-content-gap);
+    outline: none;
 }
 
 .start-menu-option-label-img {
     width: var(--start-menu-option-img-width);
+    flex-shrink: 0;
 }
 
 .start-menu-option-label-txt {
@@ -86,40 +98,51 @@
     right: var(--start-menu-option-padding);
 }
 
-.start-menu-suboptions {
-    color: var(--text-dark);
-    position: absolute;
-    top: var(--start-menu-suboptions-y-position);
-    left: var(--start-menu-suboptions-right-position);
-    display: none;
-    z-index: 8600;
-}
-
-.start-menu-option:hover .start-menu-suboptions {
-    display: block;
-}
-
+.start-menu-suboptions,
 .start-menu-shutdown-options {
     color: var(--text-dark);
     position: absolute;
-    bottom: var(--start-menu-suboptions-y-position);
     left: var(--start-menu-suboptions-right-position);
     display: none;
     z-index: 8600;
 }
 
-.start-menu-option:hover .start-menu-shutdown-options {
+.start-menu-suboptions {
+    top: var(--start-menu-suboptions-y-position);
+}
+
+.start-menu-shutdown-options {
+    bottom: var(--start-menu-suboptions-y-position);
+}
+
+.start-menu-list-open > .start-menu-suboptions,
+.start-menu-list-open > .start-menu-shutdown-options {
     display: block;
 }
 
-@media (max-width: 640px) {
-    .start-menu-suboptions {
-        top: unset;
-        bottom: var(--start-menu-option-height);
-        left: 0;
+@media (hover: hover) and (pointer: fine) {
+    .start-menu-list-entry:hover > .start-menu-suboptions,
+    .start-menu-list-entry:hover > .start-menu-shutdown-options {
+        display: block;
     }
+}
 
+#shutdown-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background-color: #000;
+    color: var(--text);
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: var(--interface-content-gap);
+}
+
+@media (max-width: 640px) {
+    .start-menu-suboptions,
     .start-menu-shutdown-options {
+        top: unset;
         bottom: var(--start-menu-option-height);
         left: 0;
     }

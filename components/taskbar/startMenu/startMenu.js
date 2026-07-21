@@ -1,10 +1,15 @@
-import { Dialog } from "../../dialog/dialog.js";
+import { Window } from "../../window/window.js";
+import { Task } from "../../task/task.js";
+import { SessionScreem } from "../../sessionScreem/sessionScreem.js";
+import { StartMenuItemManager } from "./startMenuItemManager.js";
 
 export class StartMenu {
     static #startMenu = null;
     static #startMenuButton = null;
     static #startMenuVisible = false;
     static #startMenuTemplateCache = null;
+    static #itemManager = null;
+    static #powerEntry = null;
 
     constructor() {
         throw new Error("StartMenu is a static class and cannot be instantiated.");
@@ -22,25 +27,9 @@ export class StartMenu {
         StartMenu.#startMenu = await StartMenu.#loadStartMenu();
         StartMenu.#startMenuButton = button;
 
-        StartMenu.#startMenuButton.addEventListener("click", event => {
-            event.stopPropagation();
-            StartMenu.#switchStartMenuVisibility();
-        });
-
-        document.addEventListener("click", event => {
-            const clickedOutsideMenu = !StartMenu.#startMenu.contains(event.target);
-            const clickedOutsideButton = !StartMenu.#startMenuButton.contains(event.target);
-
-            if (StartMenu.#startMenuVisible && clickedOutsideMenu && clickedOutsideButton) {
-                StartMenu.#switchStartMenuVisibility();
-            }
-        });
-
-        document.addEventListener("keydown", event => {
-            if (StartMenu.#startMenuVisible && event.key === "Escape") {
-                StartMenu.#switchStartMenuVisibility();
-            }
-        });
+        StartMenu.#configureMenuItems();
+        StartMenu.#configureSystemActions();
+        StartMenu.#configureVisibilityEvents();
 
         return StartMenu.#startMenu;
     }
@@ -68,25 +57,220 @@ export class StartMenu {
         const wrapper = document.createElement("div");
         wrapper.innerHTML = await StartMenu.#loadStartMenuTemplate();
 
-        StartMenu.#configureDefoutActions(wrapper.firstElementChild);
-
         return wrapper.firstElementChild;
     }
 
-    static #switchStartMenuVisibility() {
-        StartMenu.#startMenuVisible = !StartMenu.#startMenuVisible;
-        StartMenu.#startMenu.style.display = StartMenu.#startMenuVisible ? "flex" : "none";
+    static #configureMenuItems() {
+        const programsContainer = StartMenu.#startMenu.querySelector(
+            "#start-menu-programs-container"
+        );
+
+        StartMenu.#itemManager = new StartMenuItemManager(
+            programsContainer,
+            {
+                onApplicationSelected: () => StartMenu.#hideStartMenu(),
+                onListOpened: () => StartMenu.#closePowerOptions()
+            }
+        );
+
+        StartMenu.#itemManager.render([
+            {
+                type: "list",
+                label: "Aplicativos",
+                iconSrc: "assets/apps.png",
+                iconAlt: "Aplicativos",
+                items: [
+                    {
+                        type: "application",
+                        label: "Bloco de notas",
+                        iconSrc: "assets/bloco_de_notas.png",
+                        iconAlt: "Bloco de notas",
+                        action: () => StartMenu.#openApplicationWindow(
+                            "Bloco de notas",
+                            "./assets/bloco_de_notas.png"
+                        )
+                    },
+                    {
+                        type: "application",
+                        label: "Calculadora",
+                        iconSrc: "assets/calculadora.png",
+                        iconAlt: "Calculadora",
+                        action: () => StartMenu.#openApplicationWindow(
+                            "Calculadora",
+                            "./assets/calculadora.png"
+                        )
+                    }
+                ]
+            },
+            {
+                type: "list",
+                label: "Documentos",
+                iconSrc: "assets/docs.png",
+                iconAlt: "Documentos",
+                items: [
+                    {
+                        type: "application",
+                        label: "Currículo",
+                        iconSrc: "assets/doc.png",
+                        iconAlt: "Currículo",
+                        action: () => StartMenu.#openApplicationWindow(
+                            "Currículo",
+                            "./assets/doc.png"
+                        )
+                    },
+                    {
+                        type: "application",
+                        label: "Projetos",
+                        iconSrc: "assets/docs.png",
+                        iconAlt: "Projetos",
+                        action: () => StartMenu.#openApplicationWindow(
+                            "Projetos",
+                            "./assets/docs.png"
+                        )
+                    }
+                ]
+            }
+        ]);
     }
 
-    static #configureDefoutActions(menu) {
-        if (menu instanceof HTMLElement) {
-            menu.querySelectorAll(".start-menu-option").forEach((element) => {
-                element.addEventListener("click", () => {
-                    StartMenu.#switchStartMenuVisibility();
+    static #configureSystemActions() {
+        const logoffButton = StartMenu.#startMenu.querySelector(
+            "#start-menu-logoff-button"
+        );
+        const powerButton = StartMenu.#startMenu.querySelector(
+            "#start-menu-power-button"
+        );
+        const restartButton = StartMenu.#startMenu.querySelector(
+            "#restart-button"
+        );
+        const shutdownButton = StartMenu.#startMenu.querySelector(
+            "#shutdown-button"
+        );
 
-                    new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
-                });
-            });
-        }
+        StartMenu.#powerEntry = StartMenu.#startMenu.querySelector(
+            "#start-menu-power-entry"
+        );
+
+        logoffButton.addEventListener("click", async event => {
+            event.stopPropagation();
+            StartMenu.#hideStartMenu();
+
+            Task.getOpenTasks().forEach(task => task.removeTask());
+
+            await SessionScreem.getSessionScreem(
+                document.getElementById("session-container")
+            );
+        });
+
+        powerButton.addEventListener("click", event => {
+            event.stopPropagation();
+
+            const shouldOpen = !StartMenu.#powerEntry.classList.contains(
+                "start-menu-list-open"
+            );
+
+            StartMenu.#itemManager.closeLists();
+            StartMenu.#closePowerOptions();
+
+            if (shouldOpen) {
+                StartMenu.#powerEntry.classList.add("start-menu-list-open");
+                powerButton.setAttribute("aria-expanded", "true");
+            }
+        });
+
+        restartButton.addEventListener("click", event => {
+            event.stopPropagation();
+            window.location.reload();
+        });
+
+        shutdownButton.addEventListener("click", event => {
+            event.stopPropagation();
+            StartMenu.#shutdownSystem();
+        });
+    }
+
+    static #configureVisibilityEvents() {
+        StartMenu.#startMenuButton.addEventListener("click", event => {
+            event.stopPropagation();
+
+            if (StartMenu.#startMenuVisible) {
+                StartMenu.#hideStartMenu();
+            } else {
+                StartMenu.#showStartMenu();
+            }
+        });
+
+        document.addEventListener("click", event => {
+            const clickedOutsideMenu = !StartMenu.#startMenu.contains(event.target);
+            const clickedOutsideButton = !StartMenu.#startMenuButton.contains(event.target);
+
+            if (
+                StartMenu.#startMenuVisible &&
+                clickedOutsideMenu &&
+                clickedOutsideButton
+            ) {
+                StartMenu.#hideStartMenu();
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (StartMenu.#startMenuVisible && event.key === "Escape") {
+                StartMenu.#hideStartMenu();
+            }
+        });
+    }
+
+    static #showStartMenu() {
+        StartMenu.#startMenuVisible = true;
+        StartMenu.#startMenu.style.display = "flex";
+    }
+
+    static #hideStartMenu() {
+        StartMenu.#startMenuVisible = false;
+        StartMenu.#startMenu.style.display = "none";
+        StartMenu.#itemManager?.closeLists();
+        StartMenu.#closePowerOptions();
+    }
+
+    static #closePowerOptions() {
+        if (!StartMenu.#powerEntry) return;
+
+        StartMenu.#powerEntry.classList.remove("start-menu-list-open");
+        StartMenu.#powerEntry
+            .querySelector(":scope > #start-menu-power-button")
+            ?.setAttribute("aria-expanded", "false");
+    }
+
+    static #openApplicationWindow(title, iconSrc) {
+        const desktop = document.getElementById("desktop");
+
+        new Window(desktop, {
+            title,
+            iconSrc,
+            iconAlt: title,
+            contentSrc: "./components/window/content/wip.html"
+        });
+    }
+
+    static #shutdownSystem() {
+        StartMenu.#hideStartMenu();
+        Task.getOpenTasks().forEach(task => task.removeTask());
+
+        document.getElementById("desktop").style.display = "none";
+        document.getElementById("taskbar").style.display = "none";
+
+        const shutdownScreen = document.createElement("section");
+        const message = document.createElement("p");
+        const powerButton = document.createElement("button");
+
+        shutdownScreen.id = "shutdown-screen";
+        message.textContent = "AuroraOS foi desligado.";
+        powerButton.type = "button";
+        powerButton.classList.add("interface-button");
+        powerButton.textContent = "Ligar";
+        powerButton.addEventListener("click", () => window.location.reload());
+
+        shutdownScreen.append(message, powerButton);
+        document.body.appendChild(shutdownScreen);
     }
 }
