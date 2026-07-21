@@ -51,7 +51,7 @@ export class Dialog extends Task {
             throw new Error("O template da Dialog não possui um elemento válido.");
         }
 
-        const titleElement = dialog.querySelector(".dialog-title");
+        const titleElement = dialog.querySelector(".interface-title-text");
         const messageElement = dialog.querySelector(".dialog-message");
         const titleIcon = dialog.querySelector(".dialog-task-icon");
 
