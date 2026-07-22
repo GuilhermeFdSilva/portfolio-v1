@@ -1,6 +1,11 @@
 @import "../main/root.css";
 
 #desktop {
+    --desktop-grid-cell-width: 108px;
+    --desktop-grid-cell-height: 104px;
+    --desktop-grid-padding-x: 12px;
+    --desktop-grid-padding-y: 12px;
+
     position: fixed;
     top: var(--viewport-top);
     left: var(--viewport-left);
@@ -10,4 +15,111 @@
     isolation: isolate;
     overflow: hidden;
     background: var(--background);
+}
+
+.desktop-shortcuts-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.desktop-shortcut {
+    position: absolute;
+    width: var(--desktop-grid-cell-width);
+    height: var(--desktop-grid-cell-height);
+    padding: 7px 5px;
+    border: 2px solid transparent;
+    background: transparent;
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 7px;
+    cursor: default;
+    touch-action: none;
+    pointer-events: auto;
+}
+
+.desktop-shortcut:hover {
+    background: rgba(var(--primary-light-rgb), 0.16);
+    border-color: rgba(var(--primary-light-rgb), 0.45);
+}
+
+.desktop-shortcut:focus-visible {
+    outline: 3px dotted var(--primary-dark);
+    outline-offset: -3px;
+}
+
+.desktop-shortcut-selected {
+    background: rgba(var(--primary-light-rgb), 0.3);
+    border: 3px dotted var(--primary-dark);
+}
+
+.desktop-shortcut-dragging {
+    z-index: 2;
+    opacity: 0.78;
+    cursor: grabbing;
+}
+
+.desktop-shortcut-icon {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+.desktop-shortcut-label {
+    width: 100%;
+    padding: 3px 2px;
+    color: var(--text-dark);
+    font-size: 10px;
+    line-height: 1.35;
+    text-align: center;
+    overflow-wrap: anywhere;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+}
+
+.desktop-shortcut-selected .desktop-shortcut-label {
+    text-shadow: none;
+}
+
+@media (max-width: 600px) {
+    #desktop {
+        --desktop-grid-cell-width: 86px;
+        --desktop-grid-cell-height: 92px;
+        --desktop-grid-padding-x: 6px;
+        --desktop-grid-padding-y: 8px;
+    }
+
+    .desktop-shortcut {
+        padding: 6px 3px;
+        gap: 5px;
+    }
+
+    .desktop-shortcut-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .desktop-shortcut-label {
+        font-size: 8px;
+        line-height: 1.3;
+    }
+}
+
+@media (max-height: 500px) {
+    #desktop {
+        --desktop-grid-cell-height: 84px;
+        --desktop-grid-padding-y: 5px;
+    }
+
+    .desktop-shortcut-icon {
+        width: 40px;
+        height: 40px;
+    }
 }

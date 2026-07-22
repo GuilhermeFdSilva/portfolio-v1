@@ -3,15 +3,71 @@ import { SysBoot } from "../components/sysBoot/bootTerminal.js";
 import { SessionScreem } from "../components/sessionScreem/sessionScreem.js";
 import { Taskbar } from "../components/taskbar/taskbar.js";
 import { Dialog } from "../components/dialog/dialog.js";
+import { Window } from "../components/window/window.js";
+import { Desktop } from "../components/desktop/desktop.js";
 
 Viewport.configure();
 
-const sysBoot = await SysBoot.getSysBoot(document.getElementById("boot-container"));
-const sessionScreem = await SessionScreem.getSessionScreem(document.getElementById("session-container"));
-const desktop = document.getElementById("desktop");
+const bootContainer = document.getElementById("boot-container");
+const sessionContainer = document.getElementById("session-container");
+const desktopElement = document.getElementById("desktop");
 
-new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
-new Dialog(desktop, { title: 'WIP', message: 'Área ainda não implementada!', iconSrc: './assets/alert.png', iconAlt: 'Alerta' });
+const sysBoot = await SysBoot.getSysBoot(bootContainer);
+await SessionScreem.getSessionScreem(sessionContainer);
+
+const openApplicationWindow = ({ title, iconSrc }) => {
+    new Window(desktopElement, {
+        title,
+        iconSrc,
+        iconAlt: title,
+        contentSrc: "./components/window/content/wip.html"
+    });
+};
+
+new Desktop(desktopElement, {
+    shortcuts: [
+        {
+            id: "notepad",
+            label: "Bloco de notas",
+            iconSrc: "./assets/bloco_de_notas.png",
+            iconAlt: "Bloco de notas",
+            action: () => openApplicationWindow({
+                title: "Bloco de notas",
+                iconSrc: "./assets/bloco_de_notas.png"
+            })
+        },
+        {
+            id: "calculator",
+            label: "Calculadora",
+            iconSrc: "./assets/calculadora.png",
+            iconAlt: "Calculadora",
+            action: () => openApplicationWindow({
+                title: "Calculadora",
+                iconSrc: "./assets/calculadora.png"
+            })
+        },
+        {
+            id: "resume",
+            label: "Currículo",
+            iconSrc: "./assets/doc.png",
+            iconAlt: "Currículo",
+            action: () => openApplicationWindow({
+                title: "Currículo",
+                iconSrc: "./assets/doc.png"
+            })
+        },
+        {
+            id: "projects",
+            label: "Projetos",
+            iconSrc: "./assets/docs.png",
+            iconAlt: "Projetos",
+            action: () => openApplicationWindow({
+                title: "Projetos",
+                iconSrc: "./assets/docs.png"
+            })
+        }
+    ]
+});
 
 sysBoot.startBoot();
 
